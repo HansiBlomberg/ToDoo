@@ -20,7 +20,7 @@ namespace ToDoConsole
             
         }
 
-
+        // Needs a comment
         static void TestWcfService()
         {
             WebServiceHost host = new WebServiceHost(typeof(ToDoService), new Uri("http://localhost:8000/"));
