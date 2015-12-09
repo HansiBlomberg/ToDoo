@@ -14,7 +14,8 @@ namespace WcfToDoService
     {
 
         [OperationContract]
-        string GetData(int value);
+        [WebGet(UriTemplate = "GetToDo/{name}")]
+        string GetToDo(string name);
 
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);

@@ -12,9 +12,9 @@ namespace WcfToDoService
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class ToDoService : IToDoService
     {
-        public string GetData(int value)
+        public string GetToDo(string name)
         {
-            return string.Format("You entered: {0}", value);
+            return string.Format($"You entered: {name}");
         }
 
         public CompositeType GetDataUsingDataContract(CompositeType composite)

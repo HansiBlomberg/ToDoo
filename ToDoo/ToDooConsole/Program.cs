@@ -37,18 +37,19 @@ namespace ToDoConsole
                     string s;
 
                     Console.WriteLine("Calling GetData via HTTP GET: ");
-                    s = channel.GetData(4711);
+                    var name = "Hamid";
+                    s = channel.GetToDo(name);
                     Console.WriteLine($"   Output: {s}");
 
                     Console.WriteLine("");
                     Console.WriteLine("This can also be accomplished by navigating to");
-                    Console.WriteLine("http://localhost:8000/GetData?s=4711");
+                    Console.WriteLine($"http://localhost:8000/GetToDo/{name}");
                     Console.WriteLine("in a web browser while this sample is running.");
 
                     Console.WriteLine("");
 
                     Console.WriteLine("Calling GetData via HTTP POST: ");
-                    s = channel.GetData(42);
+                    s = channel.GetToDo(name);
                     Console.WriteLine($"   Output: {s}");
                     Console.WriteLine("");
                 }
