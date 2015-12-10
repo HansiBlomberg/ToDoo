@@ -48,6 +48,15 @@ namespace ToDoConsole
 
                     Console.WriteLine("");
 
+
+
+
+                    Console.WriteLine("Calling RevealAllMySecrets via HTTP GET: ");
+                    s = channel.RevealAllMySecrets("wrong_password");
+                    Console.WriteLine($"   Output: {s}");
+                    Console.WriteLine();
+
+
                     Console.WriteLine("Calling GetData via HTTP POST: ");
                     s = channel.GetToDo(name);
                     Console.WriteLine($"   Output: {s}");

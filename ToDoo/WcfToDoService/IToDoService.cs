@@ -18,6 +18,10 @@ namespace WcfToDoService
         string GetToDo(string name);
 
         [OperationContract]
+        [WebGet(UriTemplate = "RevealAllMySecrets/{password}")]
+        string RevealAllMySecrets(string password);
+
+        [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
         // TODO: Add your service operations here

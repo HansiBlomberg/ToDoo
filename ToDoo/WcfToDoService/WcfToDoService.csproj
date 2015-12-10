@@ -65,6 +65,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SecurePasswordHasher.cs" />
     <Compile Include="toDoService.svc.cs">
       <DependentUpon>toDoService.svc</DependentUpon>
     </Compile>
