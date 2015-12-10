@@ -9,6 +9,7 @@ using WcfToDoService;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.ServiceModel.Description;
+using ToDoBase;
 
 namespace ToDoConsole
 {
@@ -38,8 +39,12 @@ namespace ToDoConsole
 
                     Console.WriteLine("Calling GetData via HTTP GET: ");
                     var name = "Hamid";
-                    s = channel.GetToDo(name);
-                    Console.WriteLine($"   Output: {s}");
+                    List<ToDo> aToDo = channel.GetToDo(name);
+                    Console.WriteLine($"   Output:");
+                    aToDo.ForEach(delegate (ToDo todo)
+                    {
+                        Console.WriteLine(todo.Description);
+                    });
 
                     Console.WriteLine("");
                     Console.WriteLine("This can also be accomplished by navigating to");
@@ -57,10 +62,10 @@ namespace ToDoConsole
                     Console.WriteLine();
 
 
-                    Console.WriteLine("Calling GetData via HTTP POST: ");
-                    s = channel.GetToDo(name);
-                    Console.WriteLine($"   Output: {s}");
-                    Console.WriteLine("");
+                    // Console.WriteLine("Calling GetData via HTTP POST: ");
+                    // s = channel.GetToDo(name);
+                    // Console.WriteLine($"   Output: {s}");
+                    // Console.WriteLine("");
                 }
 
                 Console.WriteLine("Press <ENTER> to terminate");

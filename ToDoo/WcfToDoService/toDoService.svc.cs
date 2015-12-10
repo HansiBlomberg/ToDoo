@@ -7,6 +7,9 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using System.Xml;
+using ToDoBase;
+using ToDoDAL;
+
 
 namespace WcfToDoService
 {
@@ -14,23 +17,35 @@ namespace WcfToDoService
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class ToDoService : IToDoService
     {
-        static readonly string connectionString;
 
-        /* Configuration file example, using no path will pick the file from the applications running directory (/bin/)
-        <?xml version="1.0" encoding="utf-8" ?>
-        <Configuration>
-            <ConnectionString = 'my connection string'>
-	    </Configuration>
+        // using no path will pick the configuration file from the applications running directory(/bin/debug while we are coding)
+        /* Configuration file example, 
+    
+            <?xml version="1.0" encoding="utf-8" ?>
+            <Configuration>
+                <ConnectionString = 'my connection string'>
+            </Configuration>
+    
         */
 
         static readonly string configurationFileName = "ToDoServiceConfig.XML";
-        // Hansi: This is a static constructor.
+
+     
+        // This instance and only this instance of the Data Access Layer will be used
+        static readonly DAL ourDataAccessLayer;
+
+
+
+
+        // This is a static constructor. This code will be executed only once.
+        
         // We are using it to get the connection string that the DAL expects
-        // by reading it from a file.
+        // by reading it from a file, then we create the one and only DAL instance that
+        // will be used by our methods. 
         static ToDoService()
         {
-            // connectionString = "test";
-            connectionString = getConnectionStringFromXML(configurationFileName);
+            
+             ourDataAccessLayer = new DAL(getConnectionStringFromXML(configurationFileName));
             
         }
 
@@ -41,7 +56,7 @@ namespace WcfToDoService
 
             // Throwing an unhandled exception. We cant do much about a missing config file and this code does not have any user interface.
             if (!File.Exists(cfgFileName)) throw new FileNotFoundException("Cant find the configuration file", cfgFileName);
-            // if (!File.Exists(cfgFileName)) return $"file not found: {Directory.GetCurrentDirectory()} {cfgFileName}";
+            
             XmlDocument configuration = new XmlDocument();
             configuration.Load(cfgFileName);
             
@@ -56,16 +71,22 @@ namespace WcfToDoService
         {
             if (SecurePasswordHasher.Verify(password, "$MYHASH$V1$10000$lMUQ80G3AJNALrr0PHROwncegDhn8zIWgHdLweAJO7p92ieA"))
             {
-                return connectionString;
+                return getConnectionStringFromXML(configurationFileName);
             }
             else return "No way!";
         }
+        
 
-        public string GetToDo(string name)
+        public List<ToDo> GetToDo(string name)
         {
-            return ($"You entered: {name}");
+            // Get the ToDo-list with the name name from the database via our data access layer (DAL)
+            return ourDataAccessLayer.GetToDoListByName(name);
         }
 
+
+        // This is just a sample method, that shows how to return a "composite" type
+        // composite just means it is an object with several properties and not
+        // just a regular datatype. "CompositeType" is just a class like any other.
         public CompositeType GetDataUsingDataContract(CompositeType composite)
         {
             if (composite == null)

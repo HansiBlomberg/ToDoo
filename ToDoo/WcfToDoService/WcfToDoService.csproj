@@ -84,6 +84,16 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ToDoDAL\ToDoDAL.csproj">
+      <Project>{2fc0111a-eaeb-47a8-a5a8-654adc2a6c39}</Project>
+      <Name>ToDoDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ToDooBase\ToDoBase.csproj">
+      <Project>{2b59c5da-4fc4-4a1d-ae73-8daf4648e378}</Project>
+      <Name>ToDoBase</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
