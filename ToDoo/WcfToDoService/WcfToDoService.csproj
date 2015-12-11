@@ -61,13 +61,13 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="toDoService.svc" />
+    <Content Include="ToDoService.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SecurePasswordHasher.cs" />
-    <Compile Include="toDoService.svc.cs">
-      <DependentUpon>toDoService.svc</DependentUpon>
+    <Compile Include="ToDoService.svc.cs">
+      <DependentUpon>ToDoService.svc</DependentUpon>
     </Compile>
     <Compile Include="IToDoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
