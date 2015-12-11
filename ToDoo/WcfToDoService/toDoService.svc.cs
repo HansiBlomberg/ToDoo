@@ -30,19 +30,22 @@ namespace WcfToDoService
 
         static readonly string configurationFileName = "ToDoServiceConfig.XML";
 
-     
+
         // This instance and only this instance of the Data Access Layer will be used
-        static readonly DAL ourDataAccessLayer;
+        // The readonly keyword is a modifier that you can use on fields. When a field declaration includes a readonly modifier,
+        // assignments to the fields introduced by the declaration can only occur as part of the declaration or in a constructor in the same class. 
+        // We will assign it in the constructor.
+        private readonly DAL ourDataAccessLayer;
 
 
 
 
-        // This is a static constructor. This code will be executed only once.
-        
+        // This is the constructor, code that runs when an instance
+        // of the toDoService svc is created.     
         // We are using it to get the connection string that the DAL expects
         // by reading it from a file, then we create the one and only DAL instance that
         // will be used by our methods. 
-        static ToDoService()
+        public ToDoService()
         {
             
              ourDataAccessLayer = new DAL(getConnectionStringFromXML(configurationFileName));
