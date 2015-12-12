@@ -58,7 +58,7 @@ namespace WcfToDoService
         {
 
             // Throwing an unhandled exception. We cant do much about a missing config file and this code does not have any user interface.
-            if (!File.Exists(cfgFileName)) throw new FileNotFoundException("Cant find the configuration file", cfgFileName);
+            if (!File.Exists(cfgFileName)) throw new FileNotFoundException($"Cant find the configuration file at {Directory.GetCurrentDirectory()}", cfgFileName);
             
             XmlDocument configuration = new XmlDocument();
             configuration.Load(cfgFileName);
