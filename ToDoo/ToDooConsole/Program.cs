@@ -73,6 +73,7 @@ namespace ToDoConsole
                     ettNyttToDoItem.Name = "Charlie";
                     ettNyttToDoItem.Finnished = false;
                     ettNyttToDoItem.EstimationTime = 60;
+                    ettNyttToDoItem.Description = "Baka bröd!";
 
 
                     if( channel.CreateToDo("Charlie",ettNyttToDoItem))
