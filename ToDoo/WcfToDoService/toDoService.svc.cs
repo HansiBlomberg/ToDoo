@@ -84,6 +84,28 @@ namespace WcfToDoService
         {
             // Get the ToDo-list with the name name from the database via our data access layer (DAL)
             return ourDataAccessLayer.GetToDoListByName(name);
+
+                      
+        }
+
+        public bool CreateToDo(string name, ToDo todo)
+        {
+
+            // Nu skall vi skapa ett ToDo item till databasen
+            // Skall vi validera lite saker?
+            // Skall vi kolla om name == ToDo.Name?
+
+            // Vi vill att vi får in en todo med samma namn som den url som vi tog emot den från
+            if (name != todo.Name) return false;
+
+            // Vi ändrar/ställer CreatedDate till NU!
+            todo.CreatedDate = DateTime.Now;
+            
+
+            // ourDataAccessLayer är vår DAL
+            ourDataAccessLayer.AddToDo(todo);
+
+            return true;
         }
 
 

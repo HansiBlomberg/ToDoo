@@ -29,6 +29,10 @@ namespace ToDoConsole
             {
                 ServiceEndpoint ep = host.AddServiceEndpoint(typeof(IToDoService), new WebHttpBinding(), "");
                 host.Open();
+
+
+
+
                 using (ChannelFactory<IToDoService> cf = new ChannelFactory<IToDoService>(new WebHttpBinding(), "http://localhost:8000"))
                 {
                     cf.Endpoint.Behaviors.Add(new WebHttpBehavior());
@@ -38,7 +42,7 @@ namespace ToDoConsole
                     string s;
 
                     Console.WriteLine("Calling GetData via HTTP GET: ");
-                    var name = "Hamid";
+                    var name = "Hansi";
                     List<ToDo> aToDo = channel.GetToDo(name);
                     Console.WriteLine($"   Output:");
                     aToDo.ForEach(delegate (ToDo todo)
@@ -52,6 +56,46 @@ namespace ToDoConsole
                     Console.WriteLine("in a web browser while this sample is running.");
 
                     Console.WriteLine("");
+
+
+                    // Vi testar härmed att skapa todo items
+
+                    var ettNyttToDoItem = new ToDo();
+                    DateTime tempDateTime;
+                    var gickDetBra = DateTime.TryParse("2016-01-01", out tempDateTime);
+                    if(gickDetBra)
+                    {
+                        ettNyttToDoItem.DeadLine = tempDateTime;
+                    } else
+                    {
+                        ettNyttToDoItem.DeadLine = DateTime.Now;
+                    }
+                    ettNyttToDoItem.Name = "Charlie";
+                    ettNyttToDoItem.Finnished = false;
+                    ettNyttToDoItem.EstimationTime = 60;
+
+
+                    if( channel.CreateToDo("Charlie",ettNyttToDoItem))
+                    {
+                        Console.WriteLine($"Vi lyckades lägga till ett todo item med namn {ettNyttToDoItem.Name}" );
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Vi misslyckades med att lägga till ett todo item med namn {ettNyttToDoItem}" );
+                    }
+
+
+                    if (channel.CreateToDo("Chaplin", ettNyttToDoItem))
+                    {
+                        Console.WriteLine($"Vi lyckades lägga till ett todo item med namn {ettNyttToDoItem.Name}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Vi misslyckades med att lägga till ett todo item med namn {ettNyttToDoItem.Name}");
+                    }
+
+
+
 
 
 

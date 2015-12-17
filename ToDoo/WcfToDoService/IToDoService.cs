@@ -30,6 +30,13 @@ namespace WcfToDoService
         string RevealAllMySecrets(string password);
 
         [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "CreateToDo/{name}")]
+        bool CreateToDo(string name, ToDo todo);
+
+
+
+
+        [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
         // Här är det bara fortsätta definiera våra metoder som skall in i WCF

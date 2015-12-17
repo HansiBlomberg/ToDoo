@@ -16,5 +16,12 @@ namespace ToDoBase
         public DateTime CreatedDate { get; set; }
         public DateTime DeadLine { get; set; }
         public int EstimationTime { get; set; }
+
+
+     
     }
+
+
+    
+
 }
