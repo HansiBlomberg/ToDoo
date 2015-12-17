@@ -21,6 +21,10 @@ namespace WcfToDoService
         // T.ex. "GetToDo/{name}" för så att servern kan anropas med http://www.todoservern.com/GetToDo/ettnamn där ettnamn är namnet på
         // ToDo-listan vi vill få från servern.
 
+        // This is the class that define the INTERFACE IToDoService. The I in the beginning of the name is convention for Interface.
+        // Here is the declaration for all methods that need to be implemented in toDoService.cs
+        // The WebGet decoration describe how the webserver is going to understand incomming calls where parameters are entered as subdirectories.
+
         [OperationContract]
         [WebGet(UriTemplate = "GetToDo/{name}")]
         List<ToDo> GetToDo(string name);
@@ -40,9 +44,10 @@ namespace WcfToDoService
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
         // Här är det bara fortsätta definiera våra metoder som skall in i WCF
+        // Keep on defining the WCF methods we need
     }
 
-
+    // The class below is just an example from the tutorial, not used by our application.
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]
     public class CompositeType
