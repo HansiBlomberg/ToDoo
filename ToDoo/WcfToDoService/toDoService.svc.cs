@@ -13,8 +13,7 @@ using ToDoDAL;
 
 namespace WcfToDoService
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
+    
     public class ToDoService : IToDoService
     {
 
@@ -91,21 +90,29 @@ namespace WcfToDoService
         public bool CreateToDo(string name, ToDo todo)
         {
 
-            // Nu skall vi skapa ett ToDo item till databasen
-            // Skall vi validera lite saker?
-            // Skall vi kolla om name == ToDo.Name?
-
-            // Vi vill att vi får in en todo med samma namn som den url som vi tog emot den från
+            // We are about to create a ToDo-item in the database
+            // Maybe some validation is in order?
+            // Such as checking if name == ToDo.Name?
+                                    
+            // Because we really really want the todo to have the same Name property as specified by the name parameter to this method.
             if (name != todo.Name) return false;
 
-            // Vi ändrar/ställer CreatedDate till NU!
+            // We dont care what CreatedDate came with the todo parameter. We will use the current Date and Time!
             todo.CreatedDate = DateTime.Now;
             
 
-            // ourDataAccessLayer är vår DAL
-            ourDataAccessLayer.AddToDo(todo);
+            // ourDataAccessLayer is our DAL
+            // This is where the ToDo-item is sent to the database!
+            // It is a pity that the DAL method AddToDo wont tell us
+            // if it was successful or not by returning a bool or
+            // throwing an exception we could catch.
+      
+            // Maybe we should check first if the ToDo-item is already existing in the database in a later iteration?
+            // This would be a great place to do that!
 
-            return true;
+            ourDataAccessLayer.AddToDo(todo);  // (try to...) Save the ToDo-item to the database!!
+
+            return true;  // Maybe we should try to do some checking before we blindly return true in a later iteration?
         }
 
 
