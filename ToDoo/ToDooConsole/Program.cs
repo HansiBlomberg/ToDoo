@@ -42,7 +42,7 @@ namespace ToDoConsole
                     string s;
 
                     Console.WriteLine("Calling GetData via HTTP GET: ");
-                    var name = "Hansi";
+                    var name = "Charlie";
                     List<ToDo> aToDo = channel.GetToDo(name);
                     Console.WriteLine($"   Output:");
                     aToDo.ForEach(delegate (ToDo todo)
