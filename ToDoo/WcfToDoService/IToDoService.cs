@@ -26,15 +26,15 @@ namespace WcfToDoService
         // The WebGet decoration describe how the webserver is going to understand incomming calls where parameters are entered as subdirectories.
 
         [OperationContract]
-        [WebGet(UriTemplate = "GetToDo/{name}")]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "GetToDo/{name}")]
         List<ToDo> GetToDo(string name);
 
         [OperationContract]
-        [WebGet(UriTemplate = "RevealAllMySecrets/{password}")]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "RevealAllMySecrets/{password}")]
         string RevealAllMySecrets(string password);
 
         [OperationContract]
-        [WebInvoke(Method = "POST", UriTemplate = "CreateToDo/{name}")]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json, Method = "POST", UriTemplate = "CreateToDo/{name}")]
         bool CreateToDo(string name, ToDo todo);
 
 
