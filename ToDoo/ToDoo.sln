@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoBase", "ToDooBase\ToDoBase.csproj", "{2B59C5DA-4FC4-4A1D-AE73-8DAF4648E378}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfToDoService", "WcfToDoService\WcfToDoService.csproj", "{FBD5D3DE-51B6-44AC-8FA7-1F4BAC3ABF15}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoDAL", "ToDoDAL\ToDoDAL.csproj", "{2FC0111A-EAEB-47A8-A5A8-654ADC2A6C39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoBaseTests", "ToDoBaseTests\ToDoBaseTests.csproj", "{EE9C1D2D-A919-485D-A0A7-BAA4F39716C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +39,10 @@ Global
 		{2FC0111A-EAEB-47A8-A5A8-654ADC2A6C39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FC0111A-EAEB-47A8-A5A8-654ADC2A6C39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FC0111A-EAEB-47A8-A5A8-654ADC2A6C39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE9C1D2D-A919-485D-A0A7-BAA4F39716C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE9C1D2D-A919-485D-A0A7-BAA4F39716C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE9C1D2D-A919-485D-A0A7-BAA4F39716C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE9C1D2D-A919-485D-A0A7-BAA4F39716C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
