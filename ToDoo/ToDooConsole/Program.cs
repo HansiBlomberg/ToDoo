@@ -112,10 +112,11 @@ namespace ToDoConsole
                     }
 
                     // And here we set the rest of the properties for the ToDo-item we are about to create
+                    aNewToDoItem.CreatedDate = DateTime.Now;
                     aNewToDoItem.Name = "Charlie";
                     aNewToDoItem.Finnished = false;   // Finnished...rotflmao!
                     aNewToDoItem.EstimationTime = 60;
-                    aNewToDoItem.Description = "Baka bröd!";
+                    aNewToDoItem.Description = "Kärna smör!";
 
 
                     // Here we do the call to actually create the ToDo-item using the WCF CreateToDO method
@@ -127,7 +128,7 @@ namespace ToDoConsole
                     else
                     {
                         // This happens if the CreateToDo WVF method is unhappy and return a FALSE. 
-                        Console.WriteLine($"Vi misslyckades med att lägga till ett todo item med namn {aNewToDoItem}" );
+                        Console.WriteLine($"Vi misslyckades med att lägga till ett todo item med namn {aNewToDoItem.Name}" );
                     }
 
 

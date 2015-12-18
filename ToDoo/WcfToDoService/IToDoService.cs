@@ -25,6 +25,13 @@ namespace WcfToDoService
         // Here is the declaration for all methods that need to be implemented in toDoService.cs
         // The WebGet decoration describe how the webserver is going to understand incomming calls where parameters are entered as subdirectories.
 
+        // GET is for retrieving data
+        // POST is for updating existing data
+        // PUT is for inserting new data
+        // ResponseFormat = WebMessageFormat.Json will make the method return data i JSON format
+        // RequestFormat = WebMessageFormat.Json will make the method want input data in JSON format
+
+
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "GetToDo/{name}")]
         List<ToDo> GetToDo(string name);
@@ -34,7 +41,9 @@ namespace WcfToDoService
         string RevealAllMySecrets(string password);
 
         [OperationContract]
-        [WebInvoke(ResponseFormat = WebMessageFormat.Json, Method = "POST", UriTemplate = "CreateToDo/{name}")]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json,
+                    RequestFormat = WebMessageFormat.Json,
+                    Method = "PUT", UriTemplate = "CreateToDo/{name}")]
         bool CreateToDo(string name, ToDo todo);
 
 

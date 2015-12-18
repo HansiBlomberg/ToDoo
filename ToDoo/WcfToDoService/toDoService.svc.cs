@@ -99,20 +99,32 @@ namespace WcfToDoService
 
             // We dont care what CreatedDate came with the todo parameter. We will use the current Date and Time!
             todo.CreatedDate = DateTime.Now;
-            
+
 
             // ourDataAccessLayer is our DAL
             // This is where the ToDo-item is sent to the database!
             // It is a pity that the DAL method AddToDo wont tell us
             // if it was successful or not by returning a bool or
             // throwing an exception we could catch.
-      
+
             // Maybe we should check first if the ToDo-item is already existing in the database in a later iteration?
             // This would be a great place to do that!
 
+            var tempToDoList = ourDataAccessLayer.GetToDoListByName(todo.Name); // Get the existing todo list
+            foreach(var t in tempToDoList)
+            {
+                if (t == todo) return false; // If there is an existing todo list with same information, dont insert the new one :-)
+            }
+
             ourDataAccessLayer.AddToDo(todo);  // (try to...) Save the ToDo-item to the database!!
 
-            return true;  // Maybe we should try to do some checking before we blindly return true in a later iteration?
+            tempToDoList = ourDataAccessLayer.GetToDoListByName(todo.Name); // Get the existing todo list again!
+            foreach (var t in tempToDoList)
+            {
+                if (t == todo) return true; // This time, we DO want to find our todo list in the database :-)
+            }
+
+            return false;  // Something went wrong, the todo list did never make it to the database
         }
 
 
