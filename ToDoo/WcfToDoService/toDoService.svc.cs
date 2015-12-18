@@ -103,13 +103,7 @@ namespace WcfToDoService
 
             // ourDataAccessLayer is our DAL
             // This is where the ToDo-item is sent to the database!
-            // It is a pity that the DAL method AddToDo wont tell us
-            // if it was successful or not by returning a bool or
-            // throwing an exception we could catch.
-
-            // Maybe we should check first if the ToDo-item is already existing in the database in a later iteration?
-            // This would be a great place to do that!
-
+            
             var tempToDoList = ourDataAccessLayer.GetToDoListByName(todo.Name); // Get the existing todo list
             foreach(var t in tempToDoList)
             {

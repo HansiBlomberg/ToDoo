@@ -69,15 +69,20 @@ namespace ToDoConsole
 
                     // Now we just have to output some text to the console so that it looks like we have
                     // been busy doing a lot of stuff...
-                    Console.WriteLine($"   Output:");
+                    Console.WriteLine($"   Output for todolist {name}:");
 
-                    // It is OK if you dont understand how this works right away. It involves C# stuff
-                    // taught in the OOP 2 course. It will display the Description property value
-                    // for each todo-item in the list we received when we called the GetToDo WCF method.
-                    aToDo.ForEach(delegate (ToDo todo)
+                    // Print out some information/properties from the todo item
+                    foreach (var todoItem in aToDo)
                     {
-                        Console.WriteLine(todo.Description);
-                    });
+                        Console.WriteLine($"ID: {todoItem.Id}");
+                        Console.WriteLine($"Beskrivning: {todoItem.Description}");
+                        Console.WriteLine($"Skapad datum: {todoItem.CreatedDate}");
+                        Console.WriteLine($"Deadline: {todoItem.DeadLine}");
+                        Console.WriteLine($"Uppskattad tid att utföra: {todoItem.EstimationTime}");
+                        Console.WriteLine($"Färdig? {todoItem.Finnished}");
+                        Console.WriteLine("");
+                    };
+                                                           
 
                     // This is instructions to the user of our console application that the information
                     // can also be retrieved with an internet browser.
