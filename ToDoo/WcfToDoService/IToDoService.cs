@@ -46,6 +46,14 @@ namespace WcfToDoService
                     Method = "PUT", UriTemplate = "CreateToDo/{name}")]
         bool CreateToDo(string name, ToDo todo);
 
+        // Som utvecklare av frontend vill jag att det skapas flera punkter om jag
+        // skickar en kommaseparerad lista som innehåll på en punkt.Ex: Äpple,
+        // Banan, Päron ska bli tre punkter i listan.
+        [OperationContract]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json,
+                            RequestFormat = WebMessageFormat.Json,
+                            Method = "PUT", UriTemplate = "CreateToDoCSV/{name}/{toDoItemDescriptionsCSV}/{deadLine}/{estimationTime}")]
+        bool CreateToDoCSV(string name, string toDoItemDescriptionsCSV, string deadLine, string estimationTime);
 
 
 

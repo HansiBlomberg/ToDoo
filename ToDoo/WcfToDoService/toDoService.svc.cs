@@ -122,6 +122,52 @@ namespace WcfToDoService
         }
 
 
+        // This method will accept a comma separated list of todo descriptions and create
+        // multiple todo items in the database.
+        // We will use the same deadline and estimationtime for every item.
+        // We will use the existing method CreateToDo(string name, ToDo todo) to insert the items
+        // so this method will pretty much only parse the CSV and build the ToDo objects.
+
+        public bool CreateToDoCSV(string name, string toDoItemDescriptionsCSV, string deadLine, string estimationTime)
+        {
+
+            // Some validation may be in order
+            if (toDoItemDescriptionsCSV == "" || 
+                toDoItemDescriptionsCSV == null ||
+                name == "" ||
+                name == null) return false;
+
+            int _estimationTime;
+            if (!int.TryParse(estimationTime, out _estimationTime)) return false;
+            if (_estimationTime < 0) return false;
+
+            DateTime _deadLine;
+            if (!DateTime.TryParse(deadLine, out _deadLine)) return false;
+            
+            DateTime createdDate = DateTime.Now;
+            var toDoItemDescriptions = toDoItemDescriptionsCSV.Split(',');
+
+            var toDoList = new List<ToDo>();
+            foreach (var toDoItemDescription in toDoItemDescriptions)
+            {
+                toDoList.Add(new ToDo { Name = name,
+                    CreatedDate = createdDate,
+                    DeadLine = _deadLine,
+                    Description = toDoItemDescription,
+                    EstimationTime = _estimationTime,
+                    Finnished = false });
+            }
+
+            bool didEverythingGetAdded = true;
+            foreach (var toDo in toDoList)
+            {
+                if (!CreateToDo(name, toDo)) didEverythingGetAdded = false;
+            }
+
+            return didEverythingGetAdded;
+        }
+
+
         // This is just a sample method, that shows how to return a "composite" type
         // composite just means it is an object with several properties and not
         // just a regular datatype. "CompositeType" is just a class like any other.
