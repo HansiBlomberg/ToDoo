@@ -152,14 +152,20 @@ namespace ToDoConsole
 
             // And here we set the rest of the properties for the ToDo-item we are about to create
             aNewToDoItem.CreatedDate = DateTime.Now;
-            aNewToDoItem.Name = "Charlie";
+            aNewToDoItem.Name = name;
             aNewToDoItem.Finnished = false;   // Finnished...rotflmao!
             aNewToDoItem.EstimationTime = 60;
             aNewToDoItem.Description = "Kärna smör!";
 
 
+            // While testing, a lot of todo lists will be created.
+            // This will clean up the database
+            DeleteToDoByName(channel, name);
+
+
+
             // Here we do the call to actually create the ToDo-item using the WCF CreateToDO method
-            if (channel.CreateToDo("Charlie", aNewToDoItem))
+            if (channel.CreateToDo(name, aNewToDoItem))
             {
                 // This is the success message. It should be successful.
                 Console.WriteLine($"Vi lyckades lägga till ett todo item med namn {aNewToDoItem.Name}");
@@ -174,7 +180,7 @@ namespace ToDoConsole
             // To demonstrate, we try to create another ToDO-item, but because the CreateToDO method
             // will refuse to add Items if the name parameter (Chaplin in this case) is not the same
             // as the aNewToDoItem.Name (CHarlie in this case)
-            if (channel.CreateToDo("Chaplin", aNewToDoItem))
+            if (channel.CreateToDo(name+"other", aNewToDoItem))
             {
                 Console.WriteLine($"Vi lyckades lägga till ett todo item med namn {aNewToDoItem.Name}");
             }
@@ -188,7 +194,10 @@ namespace ToDoConsole
         // Testing the CreateToDoCSV method
         static void DemoCreateToDoCSV(IToDoService channel, string name)
         {
-            
+            // While testing, a lot of todo lists will be created.
+            // This will clean up the database
+            DeleteToDoByName(channel, name);
+
             Console.WriteLine();
             Console.WriteLine($"Creating a new ToDo list for {name} using a comma separated list of items");
 
@@ -217,6 +226,17 @@ namespace ToDoConsole
             var returnedString = channel.RevealAllMySecrets("wrong_password");
             Console.WriteLine($"   Output: {returnedString}");
             Console.WriteLine();
+        }
+
+        static void DeleteToDoByName(IToDoService channel, string name)
+        {
+
+            // While testing, a lot of todo lists will be created.
+            // This will clean up the database
+            if (channel.DeleteToDoByName(name)) Console.WriteLine($"Successfully removed all todos with name {name} from the database.");
+            else Console.WriteLine($"Tried to remove all todos for {name} but failed, or someone else managed to add new todos at the same time");
+
+
         }
 
     }

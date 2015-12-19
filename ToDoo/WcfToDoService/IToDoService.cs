@@ -55,6 +55,17 @@ namespace WcfToDoService
                             Method = "PUT", UriTemplate = "CreateToDoCSV/{name}/{toDoItemDescriptionsCSV}/{deadLine}/{estimationTime}")]
         bool CreateToDoCSV(string name, string toDoItemDescriptionsCSV, string deadLine, string estimationTime);
 
+        
+        // We need a quick way to clear out a TODO list while testing...
+        [OperationContract]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json,
+                            RequestFormat = WebMessageFormat.Json,
+                            Method = "DELETE", UriTemplate = "DeleteToDoByName/{name}")]
+        bool DeleteToDoByName(string name);
+
+
+
+
 
 
         [OperationContract]

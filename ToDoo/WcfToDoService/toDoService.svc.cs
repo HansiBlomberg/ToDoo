@@ -167,6 +167,27 @@ namespace WcfToDoService
             return didEverythingGetAdded;
         }
 
+        // This method will remove all todo items with the given name
+        // use with caution :-)
+        public bool DeleteToDoByName(string name)
+        {
+
+            if (name == "" || name == null) return false;
+
+            var toDoList = ourDataAccessLayer.GetToDoListByName(name);
+            if (toDoList.Count == 0) return false;
+
+            foreach (var toDo in toDoList)
+            {
+                ourDataAccessLayer.DeleteToDo(toDo.Id);
+            }
+
+            toDoList = ourDataAccessLayer.GetToDoListByName(name);
+            if (toDoList.Count > 0) return false;
+            return true;
+
+        }
+
 
         // This is just a sample method, that shows how to return a "composite" type
         // composite just means it is an object with several properties and not
