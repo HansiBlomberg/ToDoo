@@ -56,15 +56,15 @@ namespace ToDoConsole
 
                     // Demonstrate the methods
 
-                    DemoGetToDo(channel, "Charlie");
+                    //DemoGetToDo(channel, "Charlie");
                     
-                    DemoCreateToDo(channel, "Charlie");
+                    //DemoCreateToDo(channel, "Charlie");
 
-                    DemoCreateToDoCSV(channel, "MrCSVTester");
+                    //DemoCreateToDoCSV(channel, "MrCSVTester");
 
-                    DemoRevealAllMySecrets(channel);
+                    //DemoRevealAllMySecrets(channel);
 
-                    DemoGetDone(channel, "MrCSVTester");
+                    DemoGetDone(channel, "Hamid");
 
                     
 
@@ -134,7 +134,7 @@ namespace ToDoConsole
 
 
 
-        // Test the GetToDo WCF method
+        // Test the GetDone WCF method
         static void DemoGetDone(IToDoService channel, string name)
         {
 
