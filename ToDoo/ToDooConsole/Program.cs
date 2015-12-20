@@ -56,19 +56,20 @@ namespace ToDoConsole
 
                     // Demonstrate the methods
 
-                    //DemoGetToDo(channel, "Charlie");
+                    DemoGetToDo(channel, "Charlie");
                     
-                    //DemoCreateToDo(channel, "Charlie");
+                    DemoCreateToDo(channel, "Charlie");
 
-                    //DemoCreateToDoCSV(channel, "MrCSVTester");
+                    DemoCreateToDoCSV(channel, "MrCSVTester");
 
-                    //DemoRevealAllMySecrets(channel);
+                    DemoRevealAllMySecrets(channel);
 
                     DemoGetDone(channel, "Hamid");
+                    DemoGetDone(channel, "MrCSVTester");
 
-                    
 
-                                        
+
+
                 }
 
 
@@ -146,7 +147,7 @@ namespace ToDoConsole
 
             // Now we just have to output some text to the console so that it looks like we have
             // been busy doing a lot of stuff...
-            Console.WriteLine($"   Output for todolist {name}:");
+            Console.WriteLine($"   Output for donelist {name}:");
 
             // Print out some information/properties from the todo item
             foreach (var todoItem in aToDo)

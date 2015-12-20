@@ -89,18 +89,8 @@ namespace WcfToDoService
 
         public List<ToDo> GetDone(string name)
         {
-            List<ToDo> toDoList = ourDataAccessLayer.GetToDoListByName(name);
-            List<ToDo> doneList = new List<ToDo>();
 
-            for (int i = 0; i < toDoList.Count; i++)
-            {
-                if (toDoList[i].Finnished == true)
-                {
-                    doneList.Add(toDoList[i]);
-                }
-            }
-
-            return doneList;
+            return ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Finnished).ToList();            
         }
 
 
