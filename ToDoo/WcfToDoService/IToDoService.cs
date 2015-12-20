@@ -73,6 +73,13 @@ namespace WcfToDoService
 
         // Här är det bara fortsätta definiera våra metoder som skall in i WCF
         // Keep on defining the WCF methods we need
+
+
+        //Som utvecklare av en frontend vill jag kunna få ut alla avklarade punkter i en given todo-lista (Lista med avklarade)
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "GetDone/{name}")]
+        List<ToDo> GetDone(string name);
+        // List<ToDo> GetToDo(string name);
     }
 
     // The class below is just an example from the tutorial, not used by our application.

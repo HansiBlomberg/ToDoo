@@ -87,6 +87,23 @@ namespace WcfToDoService
                       
         }
 
+        public List<ToDo> GetDone(string name)
+        {
+            // Get the ToDo-list with the name name from the database via our data access layer (DAL)
+            List<ToDo> toDoList = ourDataAccessLayer.GetToDoListByName(name);
+
+            for (int i = 0; i < toDoList.Count; i++)
+            {
+                if (toDoList[i].Finnished == false)
+                {
+                    toDoList.Remove(toDoList[i]);
+                }
+            }
+
+            return toDoList;
+        }
+
+
         public bool CreateToDo(string name, ToDo todo)
         {
 
