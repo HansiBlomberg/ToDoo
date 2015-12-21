@@ -22,15 +22,18 @@ namespace ToDoBase.Tests
             var toDoThree = new ToDo();
             var toDoFour = new ToDo();
 
+            var commonDeadline = DateTime.Now;
+            
+
             toDoOne.CreatedDate = DateTime.Now;
-            toDoOne.DeadLine = DateTime.Now;
+            toDoOne.DeadLine = commonDeadline;
             toDoOne.Description = "MyDescription";
             toDoOne.EstimationTime = 10;
             toDoOne.Finnished = false;
             toDoOne.Name = "Mr Test";
 
             toDoTwo.CreatedDate = DateTime.Now;
-            toDoTwo.DeadLine = DateTime.Now;
+            toDoTwo.DeadLine = commonDeadline;
             toDoTwo.Description = "MyDescription";
             toDoTwo.EstimationTime = 10;
             toDoTwo.Finnished = false;
@@ -38,14 +41,14 @@ namespace ToDoBase.Tests
 
 
             toDoThree.CreatedDate = DateTime.Now;
-            toDoThree.DeadLine = DateTime.Now;
+            toDoThree.DeadLine = commonDeadline;
             toDoThree.Description = "MyOtherDescription";
             toDoThree.EstimationTime = 10;
             toDoThree.Finnished = false;
             toDoThree.Name = "Mr Test";
 
             toDoFour.CreatedDate = DateTime.Now;
-            toDoFour.DeadLine = DateTime.Now;
+            toDoFour.DeadLine = commonDeadline;
             toDoFour.Description = "MyDescription";
             toDoFour.EstimationTime = 10;
             toDoFour.Finnished = false;
@@ -53,10 +56,10 @@ namespace ToDoBase.Tests
 
             // act
 
-            bool result = toDoOne == toDoTwo;
+            bool result = toDoOne.IsEqualTo(toDoTwo);
             Assert.AreEqual(true, result);
 
-            result = toDoOne == toDoThree;
+            result = toDoOne.IsEqualTo(toDoThree);
             Assert.AreEqual(false, result);
 
           
