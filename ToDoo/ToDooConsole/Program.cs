@@ -141,41 +141,53 @@ namespace ToDoConsole
             // This will clean up the database
             DeleteToDoByName(channel, name);
 
-            ToDo rowOne = new ToDo();
-            rowOne.Name = name;
-            rowOne.Description = "Sover";
-            rowOne.CreatedDate = DateTime.Now;
-            rowOne.Finnished = false;
-            rowOne.DeadLine = DateTime.Now;
-            rowOne.EstimationTime = 100;
+            ToDo rowOne = new ToDo()
+            {
+                Name = name,
+                Description = "Sover",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now,
+                EstimationTime = 100
+            };
             channel.CreateToDo(name, rowOne);
 
-            ToDo rowTwo = new ToDo();
-            rowTwo.Name = name;
-            rowTwo.Description = "Dreglar";
-            rowTwo.CreatedDate = DateTime.Now;
-            rowTwo.Finnished = true;
-            rowTwo.DeadLine = DateTime.Now;
-            rowTwo.EstimationTime = 100;
+
+            ToDo rowTwo = new ToDo()
+            {
+                Name = name,
+                Description = "Dreglar",
+                CreatedDate = DateTime.Now,
+                Finnished = true,
+                DeadLine = DateTime.Now,
+                EstimationTime = 100
+            };
             channel.CreateToDo(name, rowTwo);
 
-            ToDo rowThree = new ToDo();
-            rowThree.Name = name;
-            rowThree.Description = "Skejtar";
-            rowThree.CreatedDate = DateTime.Now;
-            rowThree.Finnished = false;
-            rowThree.DeadLine = DateTime.Now;
-            rowThree.EstimationTime = 100;
+
+            ToDo rowThree = new ToDo()
+            {
+                Name = name,
+                Description = "Skejtar",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now,
+                EstimationTime = 100
+            };
             channel.CreateToDo(name, rowThree);
 
-            ToDo rowFour = new ToDo();
-            rowFour.Name = name;
-            rowFour.Description = "Minglar";
-            rowFour.CreatedDate = DateTime.Now;
-            rowFour.Finnished = true;
-            rowFour.DeadLine = DateTime.Now;
-            rowFour.EstimationTime = 100;
+
+            ToDo rowFour = new ToDo()
+            {
+                Name = name,
+                Description = "Minglar",
+                CreatedDate = DateTime.Now,
+                Finnished = true,
+                DeadLine = DateTime.Now,
+                EstimationTime = 100
+            };
             channel.CreateToDo(name, rowFour);
+
 
             Console.WriteLine("Calling GetDone via HTTP GET: ");
 
