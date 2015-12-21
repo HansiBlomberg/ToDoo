@@ -66,6 +66,7 @@ namespace ToDoConsole
 
                     DemoGetDone(channel, "Hamid");
 
+                    DemoDeleteToDo(channel, "Michele");
                     
 
                                         
@@ -259,13 +260,36 @@ namespace ToDoConsole
             Console.WriteLine($"Using DemoGetToDo to get the list of items for {name}:");
 
             DemoGetToDo(channel, name);
+        }
 
+        //  Test the DeleteToDo() method.
+        static void DemoDeleteToDo(IToDoService channel, string name)
+        {
+            // Create a ToDo item to delete
+            Console.WriteLine("Creating a ToDo item");
+            var toDoItem = new ToDo();
+            toDoItem.DeadLine = DateTime.Now;
 
+            toDoItem.CreatedDate = DateTime.Now;
+            toDoItem.Name = name;
+            toDoItem.Finnished = false;
+            toDoItem.EstimationTime = 1;
+            toDoItem.Description = "Delete Me!";
+            channel.CreateToDo(name, toDoItem);
+
+            // Get the last ID of that users ToDo
+            List<ToDo> aToDo = channel.GetToDo(name);
+            string lastId = Convert.ToString(aToDo.Last().Id);
+            Console.WriteLine($"Created ToDo for {name} with ID {lastId} ");
+
+            // Delete the last ToDo item
+            channel.DeleteToDoByID(lastId);
+            Console.WriteLine($"Item with {lastId} deleted");
         }
 
 
-        // Testing the RevealALlMySecrets WCF method
-        static void DemoRevealAllMySecrets(IToDoService channel)
+            // Testing the RevealALlMySecrets WCF method
+            static void DemoRevealAllMySecrets(IToDoService channel)
         {
             Console.WriteLine("Calling RevealAllMySecrets via HTTP GET: ");
             var returnedString = channel.RevealAllMySecrets("wrong_password");
