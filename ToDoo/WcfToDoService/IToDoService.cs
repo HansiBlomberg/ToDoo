@@ -80,6 +80,17 @@ namespace WcfToDoService
         [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "GetDone/{name}")]
         List<ToDo> GetDone(string name);
         // List<ToDo> GetToDo(string name);
+
+        // Som utvecklare av en frontend vill jag ha en endpoint för att kunna
+        //markera en punkt i en todo-lista som klar eller 
+        // för att ta bort den helt från systemet
+        [OperationContract]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json,
+                   RequestFormat = WebMessageFormat.Json, 
+                   Method = "POST", UriTemplate = "DeleteToDoByID/{id}")]
+
+        bool DeleteToDoByID(string id);
+
     }
 
     // The class below is just an example from the tutorial, not used by our application.
