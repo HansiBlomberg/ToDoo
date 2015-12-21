@@ -56,10 +56,10 @@ namespace ToDoBase.Tests
 
             // act
 
-            bool result = toDoOne.IsEqualTo(toDoTwo);
+            bool result = toDoOne == toDoTwo;
             Assert.AreEqual(true, result);
 
-            result = toDoOne.IsEqualTo(toDoThree);
+            result = toDoOne == toDoThree;
             Assert.AreEqual(false, result);
 
           
