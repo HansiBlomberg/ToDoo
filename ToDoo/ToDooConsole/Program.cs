@@ -288,8 +288,8 @@ namespace ToDoConsole
         }
 
 
-            // Testing the RevealALlMySecrets WCF method
-            static void DemoRevealAllMySecrets(IToDoService channel)
+        // Testing the RevealALlMySecrets WCF method
+        static void DemoRevealAllMySecrets(IToDoService channel)
         {
             Console.WriteLine("Calling RevealAllMySecrets via HTTP GET: ");
             var returnedString = channel.RevealAllMySecrets("wrong_password");
