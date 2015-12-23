@@ -31,6 +31,7 @@ namespace ToDoBase
                 if (this.Name == otherToDo.Name &&
                      this.Description == otherToDo.Description &&
                      this.DeadLine == otherToDo.DeadLine &&
+                     this.Finnished == otherToDo.Finnished &&
                      this.EstimationTime == otherToDo.EstimationTime) return 0;
 
                 // If not, check if it is the same Name, if so compare on Description

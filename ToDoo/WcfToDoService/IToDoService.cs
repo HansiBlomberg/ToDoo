@@ -82,8 +82,16 @@ namespace WcfToDoService
         // List<ToDo> GetToDo(string name);
 
         // Som utvecklare av en frontend vill jag ha en endpoint för att kunna
-        //markera en punkt i en todo-lista som klar eller 
-        // för att ta bort den helt från systemet
+        //markera en punkt i en todo-lista som klar
+        [OperationContract]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json,
+              RequestFormat = WebMessageFormat.Json,
+              Method = "PUT", UriTemplate = "todo/{name}/{id}")]
+        bool UpdateToDoByID(string name, string id, ToDo todo);
+        // bool UpdateToDoByID(string name, string id, ToDo todo);
+
+        // Som utvecklare av en frontend vill jag ha en endpoint för att kunna
+        // ta bort den helt från systemet
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
                       RequestFormat = WebMessageFormat.Json,

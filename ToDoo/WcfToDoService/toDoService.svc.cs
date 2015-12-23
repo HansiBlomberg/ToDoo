@@ -9,6 +9,7 @@ using System.Text;
 using System.Xml;
 using ToDoBase;
 using ToDoDAL;
+using System.Web.Script.Serialization;
 
 
 namespace WcfToDoService
@@ -218,6 +219,25 @@ namespace WcfToDoService
             }
             return false;
         }
+
+        // Set todo with the given ID to Finished (done).
+        public bool UpdateToDoByID(string name, string id, ToDo todo)
+        {
+            if ((name == "" || name == null) && (id == "" || id == null)) return false;
+
+            try
+            {
+                //JavaScriptSerializer serializer = new JavaScriptSerializer();
+                //ToDo todo = serializer.Deserialize<ToDo>(_todo);
+                todo.Finnished = true;
+                ourDataAccessLayer.UpdateToDo(todo);
+                return true;
+            }
+            catch { return false; }
+        }
+
+
+
 
         // This is just a sample method, that shows how to return a "composite" type
         // composite just means it is an object with several properties and not
