@@ -33,7 +33,7 @@ namespace WcfToDoService
 
 
         [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "GetToDo/{name}")]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "todo/{name}")]
         List<ToDo> GetToDo(string name);
 
         [OperationContract]

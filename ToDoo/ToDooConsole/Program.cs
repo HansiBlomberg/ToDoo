@@ -107,7 +107,7 @@ namespace ToDoConsole
             ViewToDoItems(aToDo, "todolist", name);
 
             // Display how to access them via uri
-            ViewWebInstructions($"/GetToDo/{name}");
+            ViewWebInstructions($"/todo/{name}");
 
         }
 
