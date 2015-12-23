@@ -199,8 +199,14 @@ namespace ToDoConsole
             Console.WriteLine($"There is {channel.CountToDoImportant(name)} important items in the {name} list.");
             ViewWebInstructions($"/todo/{name}/count/important");
             Console.WriteLine();
-            Console.WriteLine("DemoGetToDoImportant Calling GetToDoImportant - only important items");
 
+            Console.WriteLine("DemoGetToDoImportant Calling CountDoneImportant");
+            Console.WriteLine($"There is {channel.CountToDoImportant(name)} DONE important items in the {name} list.");
+            ViewWebInstructions($"/todo/{name}/count/important");
+            Console.WriteLine();
+
+
+            Console.WriteLine("DemoGetToDoImportant Calling GetToDoImportant - only important items");
             aToDo = channel.GetToDoImportant(name);
             ViewToDoItems(aToDo, "GetToDoImportant", name);
             ViewWebInstructions($"/todo/{name}/important");
@@ -211,6 +217,24 @@ namespace ToDoConsole
             ViewToDoItems(aToDo, "GetDoneImportant", name);
             ViewWebInstructions($"/getdone/{name}/important");
             Console.WriteLine();
+
+            Console.WriteLine("DemoGetToDoImportant Calling GetNotDone");
+            aToDo = channel.GetNotDone(name);
+            ViewToDoItems(aToDo, "GetNotDone", name);
+            ViewWebInstructions($"/getnotdone/{name}");
+            Console.WriteLine();
+
+
+            Console.WriteLine("DemoGetToDoImportant Calling GetNotDoneImportant");
+            aToDo = channel.GetNotDoneImportant(name);
+            ViewToDoItems(aToDo, "GetNotDoneImportant", name);
+            ViewWebInstructions($"/getnotdone/{name}/important");
+            Console.WriteLine();
+
+         
+
+
+
 
         }
 
@@ -229,6 +253,21 @@ namespace ToDoConsole
             Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the IMPORTANT items in {name}");
             Console.WriteLine($"so it will be done at {estimate.CompletedAt.Date.ToString("yyyy-MM-dd HH:mm")}");
             ViewWebInstructions($"/todo/{name}/estimate/important");
+
+
+            Console.WriteLine();
+            Console.WriteLine("DemoGetEstimate Calling GetEstimateNotDone - for all the items");
+            estimate = channel.GetEstimateNotDone(name);
+            Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the NOT DONE items in {name}");
+            Console.WriteLine($"so it will be done at {estimate.CompletedAt.ToString("yyyy-MM-dd HH:mm")}");
+            ViewWebInstructions($"/getnotdone/{name}/estimate");
+
+            Console.WriteLine();
+            Console.WriteLine("DemoGetEstimate Calling GetEstimateNotDoneImportant - for IMPORTANT items");
+            estimate = channel.GetEstimateNotDoneImportant(name);
+            Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the NOT DONE IMPORTANT items in {name}");
+            Console.WriteLine($"so it will be done at {estimate.CompletedAt.Date.ToString("yyyy-MM-dd HH:mm")}");
+            ViewWebInstructions($"/getnotdone/{name}/estimate/important");
 
 
 

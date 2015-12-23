@@ -114,16 +114,37 @@ namespace WcfToDoService
             return GetToDoImportant(name).Count();
         }
 
+        public int CountDoneImportant(string name)
+        {
+            return GetDoneImportant(name).Count();
+        }
+
+        public int CountNotDoneImportant(string name)
+        {
+            return GetNotDoneImportant(name).Count();
+        }
+
         public List<ToDo> GetDone(string name)
         {
 
             return ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Finnished).ToList();            
         }
 
+        public List<ToDo> GetNotDone(string name)
+        {
+
+            return ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Finnished == false).ToList();
+        }
+
         public List<ToDo> GetDoneImportant(string name)
         {
 
             return GetDone(name).Where(t => t.Description.Last() == '!').ToList();
+        }
+        public List<ToDo> GetNotDoneImportant(string name)
+        {
+
+            return GetNotDone(name).Where(t => t.Description.Last() == '!').ToList();
         }
 
 
@@ -259,11 +280,25 @@ namespace WcfToDoService
 
         }
 
+        public Estimate GetEstimateNotDone(string name)
+        {
+            var totalTime = GetNotDone(name).Sum(t => t.EstimationTime);
+            return new Estimate { TotalTime = totalTime, CompletedAt = DateTime.Now.AddMinutes(totalTime) };
+
+        }
+
         public Estimate GetEstimateImportant(string name)
         {
             var totalTime = GetToDoImportant(name).Sum(t => t.EstimationTime);
             return new Estimate { TotalTime = totalTime, CompletedAt = DateTime.Now.AddMinutes(totalTime) };
         }
+
+        public Estimate GetEstimateNotDoneImportant(string name)
+        {
+            var totalTime = GetNotDoneImportant(name).Sum(t => t.EstimationTime);
+            return new Estimate { TotalTime = totalTime, CompletedAt = DateTime.Now.AddMinutes(totalTime) };
+        }
+
 
 
 
