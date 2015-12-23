@@ -87,10 +87,28 @@ namespace WcfToDoService
                       
         }
 
+        public List<ToDo> GetToDoImportant(string name)
+        {
+
+            return GetToDo(name).Where(t => t.Description.Last() == '!').ToList();
+
+        }
+
+        public int CountToDoImportant(string name)
+        {
+            return GetToDoImportant(name).Count();
+        }
+
         public List<ToDo> GetDone(string name)
         {
 
             return ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Finnished).ToList();            
+        }
+
+        public List<ToDo> GetDoneImportant(string name)
+        {
+
+            return GetDone(name).Where(t => t.Description.Last() == '!').ToList();
         }
 
 

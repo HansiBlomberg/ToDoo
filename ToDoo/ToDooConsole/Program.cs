@@ -57,6 +57,8 @@ namespace ToDoConsole
                     // Demonstrate the methods
 
                     DemoGetToDo(channel, "Charlie");
+
+                    DemoGetToDoImportant(channel, "MrInAHurry");
                     
                     DemoCreateToDo(channel, "Charlie");
 
@@ -112,7 +114,107 @@ namespace ToDoConsole
         }
 
 
-        
+        // Test the GetToDo WCF method
+        static void DemoGetToDoImportant(IToDoService channel, string name)
+        {
+
+            Console.WriteLine();
+            Console.WriteLine($"DemoGetToDoImportant clearing out test data for todolist {name}");
+            DeleteToDoByName(channel, name);
+
+
+
+            Console.WriteLine($"DemoGetToDoImportant creating test data for todolist {name}");
+            ToDo rowOne = new ToDo()
+            {
+                Name = name,
+                Description = "Inte viktigt",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now,
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowOne);
+
+
+            ToDo rowTwo = new ToDo()
+            {
+                Name = name,
+                Description = "Viktigt!",
+                CreatedDate = DateTime.Now,
+                Finnished = true,
+                DeadLine = DateTime.Now,
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowTwo);
+
+
+            ToDo rowThree = new ToDo()
+            {
+                Name = name,
+                Description = "Gör detta nu!",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now,
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowThree);
+
+
+            ToDo rowFour = new ToDo()
+            {
+                Name = name,
+                Description = "Gör detta senare...",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now,
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowFour);
+
+            ToDo rowFive = new ToDo()
+            {
+                Name = name,
+                Description = "Detta har vi gjort!",
+                CreatedDate = DateTime.Now,
+                Finnished = true,
+                DeadLine = DateTime.Now,
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowFive);
+
+
+            Console.WriteLine("DemoGetToDoImportant Calling GetToDo - this is all the items");
+            List<ToDo> aToDo = channel.GetToDo(name);
+            ViewToDoItems(aToDo, "GetToDo", name);
+
+
+            Console.WriteLine("DemoGetToDoImportant Calling CountToDoImportant");
+            Console.WriteLine($"There is {channel.CountToDoImportant(name)} important items in the {name} list.");
+            ViewWebInstructions($"/todo/{name}/count/important");
+            Console.WriteLine();
+            Console.WriteLine("DemoGetToDoImportant Calling GetToDoImportant - only important items");
+
+            aToDo = channel.GetToDoImportant(name);
+            ViewToDoItems(aToDo, "GetToDoImportant", name);
+            ViewWebInstructions($"/todo/{name}/important");
+            Console.WriteLine();
+
+            Console.WriteLine("DemoGetToDoImportant Calling GetDoneImportant");
+            aToDo = channel.GetDoneImportant(name);
+            ViewToDoItems(aToDo, "GetDoneImportant", name);
+            ViewWebInstructions($"/getdone/{name}/important");
+            Console.WriteLine();
+
+
+
+
+
+
+        }
+
+
+
 
         // Test the GetDone WCF method
         static void DemoGetDone(IToDoService channel, string name)

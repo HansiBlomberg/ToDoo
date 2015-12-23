@@ -37,6 +37,14 @@ namespace WcfToDoService
         List<ToDo> GetToDo(string name);
 
         [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "todo/{name}/important")]
+        List<ToDo> GetToDoImportant(string name);
+
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "todo/{name}/count/important")]
+        int CountToDoImportant(string name);
+
+        [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "RevealAllMySecrets/{password}")]
         string RevealAllMySecrets(string password);
 
@@ -79,7 +87,13 @@ namespace WcfToDoService
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "GetDone/{name}")]
         List<ToDo> GetDone(string name);
-        // List<ToDo> GetToDo(string name);
+
+        //Som utvecklare av en frontend vill jag kunna få ut alla VIKTIGA avklarade punkter i en given todo-lista
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "GetDone/{name}/important")]
+        List<ToDo> GetDoneImportant(string name);
+
+
 
         // Som utvecklare av en frontend vill jag ha en endpoint för att kunna
         //markera en punkt i en todo-lista som klar eller 
