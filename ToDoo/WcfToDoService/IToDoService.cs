@@ -104,6 +104,33 @@ namespace WcfToDoService
                       Method = "DELETE", UriTemplate = "todo/{name}/{id}")]
         bool DeleteToDoByID(string name, string id);
 
+
+        //Som utvecklare av en frontend vill jag kunna få ut ett estimat på tidsåtgång
+        //samt tidpunkt för att klara av alla punkter beräknat från tiden anropet gjordes
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "todo/{name}/estimate")]
+        Estimate GetEstimate(string name);
+
+        //Som utvecklare av en frontend vill jag kunna få ut ett estimat på tidsåtgång
+        //samt tidpunkt för att klara av alla VIKTIGA punkter beräknat från tiden anropet gjordes
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "todo/{name}/estimate/important")]
+        Estimate GetEstimateImportant(string name);
+
+    }
+
+
+    // ¨This class is used by the Estimate method
+    [DataContract]
+    public class Estimate
+    {
+        
+        [DataMember]
+         public int TotalTime { get; set; }
+        
+        [DataMember]
+        public DateTime CompletedAt { get; set; }
+        
     }
 
     // The class below is just an example from the tutorial, not used by our application.

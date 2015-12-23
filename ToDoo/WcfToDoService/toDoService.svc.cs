@@ -237,6 +237,21 @@ namespace WcfToDoService
             return false;
         }
 
+        public Estimate GetEstimate(string name)
+        {
+            var totalTime = GetToDo(name).Sum(t => t.EstimationTime);
+            return new Estimate { TotalTime = totalTime, CompletedAt = DateTime.Now.AddMinutes(totalTime)};
+
+        }
+
+        public Estimate GetEstimateImportant(string name)
+        {
+            var totalTime = GetToDoImportant(name).Sum(t => t.EstimationTime);
+            return new Estimate { TotalTime = totalTime, CompletedAt = DateTime.Now.AddMinutes(totalTime) };
+        }
+
+
+
         // This is just a sample method, that shows how to return a "composite" type
         // composite just means it is an object with several properties and not
         // just a regular datatype. "CompositeType" is just a class like any other.

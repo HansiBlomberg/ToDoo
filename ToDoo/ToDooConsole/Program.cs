@@ -59,6 +59,8 @@ namespace ToDoConsole
                     DemoGetToDo(channel, "Charlie");
 
                     DemoGetToDoImportant(channel, "MrInAHurry");
+
+                    DemoGetEstimate(channel, "MrInAHurry");
                     
                     DemoCreateToDo(channel, "Charlie");
 
@@ -69,6 +71,8 @@ namespace ToDoConsole
                     DemoGetDone(channel, "Chow");
 
                     DemoDeleteToDo(channel, "Michele");
+
+
                     
 
                 }
@@ -206,14 +210,27 @@ namespace ToDoConsole
             ViewWebInstructions($"/getdone/{name}/important");
             Console.WriteLine();
 
+        }
 
+        static void DemoGetEstimate(IToDoService channel, string name)
+        {
+            Console.WriteLine();
+            Console.WriteLine("DemoGetEstimate Calling GetEstimate - for all the items");
+            var estimate = channel.GetEstimate(name);
+            Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the items in {name}");
+            Console.WriteLine($"so it will be done at {estimate.CompletedAt.ToString("yyyy-MM-dd HH:mm")}");
+            ViewWebInstructions($"/todo/{name}/estimate");
 
+            Console.WriteLine();
+            Console.WriteLine("DemoGetEstimate Calling GetEstimateImportant - for all the items");
+            estimate = channel.GetEstimateImportant(name);
+            Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the IMPORTANT items in {name}");
+            Console.WriteLine($"so it will be done at {estimate.CompletedAt.Date.ToString("yyyy-MM-dd HH:mm")}");
+            ViewWebInstructions($"/todo/{name}/estimate/important");
 
 
 
         }
-
-
 
 
         // Test the GetDone WCF method
