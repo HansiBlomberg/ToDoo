@@ -43,7 +43,7 @@ namespace WcfToDoService
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
                     RequestFormat = WebMessageFormat.Json,
-                    Method = "PUT", UriTemplate = "CreateToDo/{name}")]
+                    Method = "PUT", UriTemplate = "todo/{name}/new")]
         bool CreateToDo(string name, ToDo todo);
 
         // Som utvecklare av frontend vill jag att det skapas flera punkter om jag
@@ -52,7 +52,7 @@ namespace WcfToDoService
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
                             RequestFormat = WebMessageFormat.Json,
-                            Method = "PUT", UriTemplate = "CreateToDoCSV/{name}/{toDoItemDescriptionsCSV}/{deadLine}/{estimationTime}")]
+                            Method = "POST", UriTemplate = "CreateToDoCSV/{name}/{toDoItemDescriptionsCSV}/{deadLine}/{estimationTime}")]
         bool CreateToDoCSV(string name, string toDoItemDescriptionsCSV, string deadLine, string estimationTime);
 
         
