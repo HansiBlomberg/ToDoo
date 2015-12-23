@@ -196,18 +196,27 @@ namespace WcfToDoService
         }
 
         // Remove todo with the given ID
-        public bool DeleteToDoByID(string _id)
+        public bool DeleteToDoByID(string _name, string _id)
         {
+            if ((_name == "" || _name == null) && (_id == "" || _id == null)) return false;
+
             int id;
             bool result = int.TryParse(_id, out id);
 
             if (result)
             {
-                ourDataAccessLayer.DeleteToDo(id);
-                return true;
+                try
+                {
+                    var toDo = ourDataAccessLayer.GetToDoById(id);
+                    if (toDo.Name.ToLower() == _name.ToLower())
+                    {
+                        ourDataAccessLayer.DeleteToDo(id);
+                        return true;
+                    }
+                }
+                catch { return false; }
             }
-            else return false;
-
+            return false;
         }
 
         // This is just a sample method, that shows how to return a "composite" type

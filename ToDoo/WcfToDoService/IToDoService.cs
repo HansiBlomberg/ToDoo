@@ -86,10 +86,9 @@ namespace WcfToDoService
         // för att ta bort den helt från systemet
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
-                   RequestFormat = WebMessageFormat.Json, 
-                   Method = "POST", UriTemplate = "DeleteToDoByID/{id}")]
-
-        bool DeleteToDoByID(string id);
+                      RequestFormat = WebMessageFormat.Json,
+                      Method = "DELETE", UriTemplate = "todo/{name}/{id}")]
+        bool DeleteToDoByID(string name, string id);
 
     }
 

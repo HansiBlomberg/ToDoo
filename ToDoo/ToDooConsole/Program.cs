@@ -293,7 +293,7 @@ namespace ToDoConsole
             Console.WriteLine($"Created ToDo for {name} with ID {lastId} ");
 
             // Delete the last ToDo item
-            channel.DeleteToDoByID(lastId);
+            channel.DeleteToDoByID(name, lastId);
             Console.WriteLine($"Item with {lastId} deleted");
         }
 
