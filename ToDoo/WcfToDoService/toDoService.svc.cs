@@ -94,6 +94,21 @@ namespace WcfToDoService
 
         }
 
+        public List<ToDo> GetToDoPriority(string name)
+        {
+
+            return GetToDo(name).OrderBy(t => t.DeadLine).ToList();
+
+        }
+
+        public List<ToDo> GetToDoPriorityImportant(string name)
+        {
+
+            return GetToDoImportant(name).OrderBy(t => t.DeadLine).ToList();
+
+        }
+
+
         public int CountToDoImportant(string name)
         {
             return GetToDoImportant(name).Count();

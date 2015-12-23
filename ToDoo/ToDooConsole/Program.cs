@@ -61,6 +61,8 @@ namespace ToDoConsole
                     DemoGetToDoImportant(channel, "MrInAHurry");
 
                     DemoGetEstimate(channel, "MrInAHurry");
+
+                    DemoGetToDoPriority(channel, "MrInAHurry");
                     
                     DemoCreateToDo(channel, "Charlie");
 
@@ -135,7 +137,7 @@ namespace ToDoConsole
                 Description = "Inte viktigt",
                 CreatedDate = DateTime.Now,
                 Finnished = false,
-                DeadLine = DateTime.Now,
+                DeadLine = DateTime.Now.AddDays(10),
                 EstimationTime = 100
             };
             channel.CreateToDo(name, rowOne);
@@ -147,7 +149,7 @@ namespace ToDoConsole
                 Description = "Viktigt!",
                 CreatedDate = DateTime.Now,
                 Finnished = true,
-                DeadLine = DateTime.Now,
+                DeadLine = DateTime.Now.AddDays(20),
                 EstimationTime = 100
             };
             channel.CreateToDo(name, rowTwo);
@@ -159,7 +161,7 @@ namespace ToDoConsole
                 Description = "Gör detta nu!",
                 CreatedDate = DateTime.Now,
                 Finnished = false,
-                DeadLine = DateTime.Now,
+                DeadLine = DateTime.Now.AddDays(5),
                 EstimationTime = 100
             };
             channel.CreateToDo(name, rowThree);
@@ -171,7 +173,7 @@ namespace ToDoConsole
                 Description = "Gör detta senare...",
                 CreatedDate = DateTime.Now,
                 Finnished = false,
-                DeadLine = DateTime.Now,
+                DeadLine = DateTime.Now.AddDays(7),
                 EstimationTime = 100
             };
             channel.CreateToDo(name, rowFour);
@@ -182,7 +184,7 @@ namespace ToDoConsole
                 Description = "Detta har vi gjort!",
                 CreatedDate = DateTime.Now,
                 Finnished = true,
-                DeadLine = DateTime.Now,
+                DeadLine = DateTime.Now.AddDays(2),
                 EstimationTime = 100
             };
             channel.CreateToDo(name, rowFive);
@@ -222,11 +224,29 @@ namespace ToDoConsole
             ViewWebInstructions($"/todo/{name}/estimate");
 
             Console.WriteLine();
-            Console.WriteLine("DemoGetEstimate Calling GetEstimateImportant - for all the items");
+            Console.WriteLine("DemoGetEstimate Calling GetEstimateImportant - for IMPORTANT items");
             estimate = channel.GetEstimateImportant(name);
             Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the IMPORTANT items in {name}");
             Console.WriteLine($"so it will be done at {estimate.CompletedAt.Date.ToString("yyyy-MM-dd HH:mm")}");
             ViewWebInstructions($"/todo/{name}/estimate/important");
+
+
+
+        }
+
+        static void DemoGetToDoPriority(IToDoService channel, string name)
+        {
+            Console.WriteLine();
+            Console.WriteLine("DemoGetToDoPriority Calling GetToDoPriority - for all the items");
+            var aToDo = channel.GetToDoPriority(name);
+            ViewToDoItems(aToDo, "GetToDoPriority", name);
+            ViewWebInstructions($"/todo/{name}/priority");
+
+            Console.WriteLine();
+            Console.WriteLine("DemoGetToDoPriority Calling GetToDoPriorityImportant - for IMPORTANT items");
+            aToDo = channel.GetToDoPriorityImportant(name);
+            ViewToDoItems(aToDo, "GetToDoPriorityImportant", name);
+            ViewWebInstructions($"/todo/{name}/priority/important");
 
 
 

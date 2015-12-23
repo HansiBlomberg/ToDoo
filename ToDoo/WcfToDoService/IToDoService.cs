@@ -37,6 +37,14 @@ namespace WcfToDoService
         List<ToDo> GetToDo(string name);
 
         [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "todo/{name}/priority")]
+        List<ToDo> GetToDoPriority(string name);
+
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "todo/{name}/priority/important")]
+        List<ToDo> GetToDoPriorityImportant(string name);
+
+        [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "todo/{name}/important")]
         List<ToDo> GetToDoImportant(string name);
 
