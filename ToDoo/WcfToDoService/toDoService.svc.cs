@@ -94,9 +94,34 @@ namespace WcfToDoService
 
         }
 
+        public List<ToDo> GetToDoPriority(string name)
+        {
+
+            return GetToDo(name).OrderBy(t => t.DeadLine).ToList();
+
+        }
+
+        public List<ToDo> GetToDoPriorityImportant(string name)
+        {
+
+            return GetToDoImportant(name).OrderBy(t => t.DeadLine).ToList();
+
+        }
+
+
         public int CountToDoImportant(string name)
         {
             return GetToDoImportant(name).Count();
+        }
+
+        public int CountDoneImportant(string name)
+        {
+            return GetDoneImportant(name).Count();
+        }
+
+        public int CountNotDoneImportant(string name)
+        {
+            return GetNotDoneImportant(name).Count();
         }
 
         public List<ToDo> GetDone(string name)
@@ -105,10 +130,21 @@ namespace WcfToDoService
             return ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Finnished).ToList();            
         }
 
+        public List<ToDo> GetNotDone(string name)
+        {
+
+            return ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Finnished == false).ToList();
+        }
+
         public List<ToDo> GetDoneImportant(string name)
         {
 
             return GetDone(name).Where(t => t.Description.Last() == '!').ToList();
+        }
+        public List<ToDo> GetNotDoneImportant(string name)
+        {
+
+            return GetNotDone(name).Where(t => t.Description.Last() == '!').ToList();
         }
 
 
@@ -237,106 +273,32 @@ namespace WcfToDoService
             return false;
         }
 
-
-        public string EditToDo(string id,
-                             string description,
-                             string name,
-                             string deadLine,
-                             string estimationTime,
-                             string finnished)
+        public Estimate GetEstimate(string name)
         {
-            int _id;
-            Int32.TryParse(id, out _id);
-            var toDoOld = ourDataAccessLayer.GetToDoById(_id);
-            var toDoNew = new ToDo();
+            var totalTime = GetToDo(name).Sum(t => t.EstimationTime);
+            return new Estimate { TotalTime = totalTime, CompletedAt = DateTime.Now.AddMinutes(totalTime)};
 
-            toDoNew = toDoOld;
-            //toDoNew.Id = _id;
+        }
 
+        public Estimate GetEstimateNotDone(string name)
+        {
+            var totalTime = GetNotDone(name).Sum(t => t.EstimationTime);
+            return new Estimate { TotalTime = totalTime, CompletedAt = DateTime.Now.AddMinutes(totalTime) };
 
-            if (description != "default")
-            {
-                toDoNew.Description = description;
-            }
-                     
-            
-            if (name != "default")
-            {
-                toDoNew.Name = name;
-            }
-            
-            
+        }
 
-            if (deadLine != "default")
-            {
-                try
-                {
-                    toDoNew.DeadLine = Convert.ToDateTime(deadLine);
-                }
-                catch
-                {
-                    Console.WriteLine("Fel format på DeadLine");
-                }
-            }
+        public Estimate GetEstimateImportant(string name)
+        {
+            var totalTime = GetToDoImportant(name).Sum(t => t.EstimationTime);
+            return new Estimate { TotalTime = totalTime, CompletedAt = DateTime.Now.AddMinutes(totalTime) };
+        }
 
+        public Estimate GetEstimateNotDoneImportant(string name)
+        {
+            var totalTime = GetNotDoneImportant(name).Sum(t => t.EstimationTime);
+            return new Estimate { TotalTime = totalTime, CompletedAt = DateTime.Now.AddMinutes(totalTime) };
+        }
 
-
-            int _estimationTime;
-            if (estimationTime != "default" && (Int32.TryParse(estimationTime, out _estimationTime)))
-            {
-                toDoNew.EstimationTime = _estimationTime;
-            }
-            
-
-
-
-            if (finnished != "default")
-            {
-                finnished = finnished.ToLower();
-                if (finnished == "true")
-                {
-                    toDoNew.Finnished = true;
-                }
-                else if (finnished == "false")
-                {
-                    toDoNew.Finnished = false;
-                }
-            }
-            
-        
-
-            ourDataAccessLayer.UpdateToDo(toDoNew);
-            string cannotChangeThese = "";
-            var after = ourDataAccessLayer.GetToDoById(_id);
-            if (description != after.Description && description != "default")
-            {
-                cannotChangeThese = cannotChangeThese + "Description";
-            }
-
-            if (name != after.Name && name != "default")
-            {
-                cannotChangeThese = cannotChangeThese + " Name";
-            }
-
-            if (toDoNew.DeadLine != after.DeadLine && deadLine != "default")
-            {
-                cannotChangeThese = cannotChangeThese + " DeadLine";
-            }
-
-            if (estimationTime != after.EstimationTime.ToString() && estimationTime != "default")
-            {
-                cannotChangeThese = cannotChangeThese + " EstimationTime";
-            }
-
-            if (finnished.ToLower() != after.Finnished.ToString().ToLower() && finnished != "default")
-            {
-                cannotChangeThese = cannotChangeThese + " Finnished";
-            }
-
-            return cannotChangeThese;
-            
-
-        } // EditToDo slutar här
 
 
 

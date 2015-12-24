@@ -37,12 +37,32 @@ namespace WcfToDoService
         List<ToDo> GetToDo(string name);
 
         [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "todo/{name}/priority")]
+        List<ToDo> GetToDoPriority(string name);
+
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "todo/{name}/priority/important")]
+        List<ToDo> GetToDoPriorityImportant(string name);
+
+        [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "todo/{name}/important")]
         List<ToDo> GetToDoImportant(string name);
 
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "todo/{name}/count/important")]
         int CountToDoImportant(string name);
+
+        
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "getdone/{name}/count/important")]
+        int CountDoneImportant(string name);
+
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "getnotdone/{name}/count/important")]
+        int CountNotDoneImportant(string name);
+
+
+
 
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "RevealAllMySecrets/{password}")]
@@ -88,10 +108,20 @@ namespace WcfToDoService
         [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "GetDone/{name}")]
         List<ToDo> GetDone(string name);
 
+        //Som utvecklare av en frontend vill jag kunna få ut alla EJ avklarade punkter i en given todo-lista (Lista med avklarade)
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "GetNotDone/{name}")]
+        List<ToDo> GetNotDone(string name);
+
         //Som utvecklare av en frontend vill jag kunna få ut alla VIKTIGA avklarade punkter i en given todo-lista
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "GetDone/{name}/important")]
         List<ToDo> GetDoneImportant(string name);
+
+        //Som utvecklare av en frontend vill jag kunna få ut alla VIKTIGA EJ avklarade punkter i en given todo-lista
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "GetNotDone/{name}/important")]
+        List<ToDo> GetNotDoneImportant(string name);
 
 
 
@@ -105,25 +135,44 @@ namespace WcfToDoService
         bool DeleteToDoByID(string name, string id);
 
 
-        //Som utvecklare av frontend vill 
-        //jag kunna redigera punkter som redan
-        //finns i min todo
+        //Som utvecklare av en frontend vill jag kunna få ut ett estimat på tidsåtgång
+        //samt tidpunkt för att klara av alla punkter beräknat från tiden anropet gjordes
         [OperationContract]
-        [WebInvoke(ResponseFormat = WebMessageFormat.Json,
-                   RequestFormat = WebMessageFormat.Json,
-                   //Method = "PUT", UriTemplate = "EditToDo/{id}/{description}/{name}/{deadLine}/{estimationTime}/{finnished}")]
-                   //Method = "PUT", UriTemplate = "EditToDo/{id}/{description=default}/{name=default}")]
-                   Method = "PUT", UriTemplate = "EditToDo/{id}/{description=default}/{name=default}/{deadLine=default}/{estimationTime=default}/{finnished=default}")]
-        string EditToDo(string id,
-                      string description,
-                      string name,
-                      string deadLine,
-                      string estimationTime,
-                      string finnished);
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "todo/{name}/estimate")]
+        Estimate GetEstimate(string name);
+
+        //Som utvecklare av en frontend vill jag kunna få ut ett estimat på tidsåtgång
+        //samt tidpunkt för att klara av alla EJ REDAN AVKLARADE punkter beräknat från tiden anropet gjordes
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "getnotdone/{name}/estimate")]
+        Estimate GetEstimateNotDone(string name);
+
+        //Som utvecklare av en frontend vill jag kunna få ut ett estimat på tidsåtgång
+        //samt tidpunkt för att klara av alla VIKTIGA punkter beräknat från tiden anropet gjordes
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "todo/{name}/estimate/important")]
+        Estimate GetEstimateImportant(string name);
+
+        //Som utvecklare av en frontend vill jag kunna få ut ett estimat på tidsåtgång
+        //samt tidpunkt för att klara av alla EJ AVKLARADE VIKTIGA punkter beräknat från tiden anropet gjordes
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "getnotdone/{name}/estimate/important")]
+        Estimate GetEstimateNotDoneImportant(string name);
+
+    }
 
 
-
-
+    // ¨This class is used by the Estimate method
+    [DataContract]
+    public class Estimate
+    {
+        
+        [DataMember]
+         public int TotalTime { get; set; }
+        
+        [DataMember]
+        public DateTime CompletedAt { get; set; }
+        
     }
 
     // The class below is just an example from the tutorial, not used by our application.

@@ -59,6 +59,10 @@ namespace ToDoConsole
                     DemoGetToDo(channel, "Charlie");
 
                     DemoGetToDoImportant(channel, "MrInAHurry");
+
+                    DemoGetEstimate(channel, "MrInAHurry");
+
+                    DemoGetToDoPriority(channel, "MrInAHurry");
                     
                     DemoCreateToDo(channel, "Charlie");
 
@@ -70,9 +74,8 @@ namespace ToDoConsole
 
                     DemoDeleteToDo(channel, "Michele");
 
-                    //DemoEditToDo(channel, "1", "Ät mycket julmat", "PChow", "", "", "");
-                    //DemoEditToDo(channel, "2", "", "Hamidx", "1997-12-24 12:14:31.147", "", "");
-                    DemoEditToDo(channel, "2", "", "Hamiz", "2012-12-12", "3", "false");
+
+                    
 
                 }
 
@@ -134,7 +137,7 @@ namespace ToDoConsole
                 Description = "Inte viktigt",
                 CreatedDate = DateTime.Now,
                 Finnished = false,
-                DeadLine = DateTime.Now,
+                DeadLine = DateTime.Now.AddDays(10),
                 EstimationTime = 100
             };
             channel.CreateToDo(name, rowOne);
@@ -146,7 +149,7 @@ namespace ToDoConsole
                 Description = "Viktigt!",
                 CreatedDate = DateTime.Now,
                 Finnished = true,
-                DeadLine = DateTime.Now,
+                DeadLine = DateTime.Now.AddDays(20),
                 EstimationTime = 100
             };
             channel.CreateToDo(name, rowTwo);
@@ -158,7 +161,7 @@ namespace ToDoConsole
                 Description = "Gör detta nu!",
                 CreatedDate = DateTime.Now,
                 Finnished = false,
-                DeadLine = DateTime.Now,
+                DeadLine = DateTime.Now.AddDays(5),
                 EstimationTime = 100
             };
             channel.CreateToDo(name, rowThree);
@@ -170,7 +173,7 @@ namespace ToDoConsole
                 Description = "Gör detta senare...",
                 CreatedDate = DateTime.Now,
                 Finnished = false,
-                DeadLine = DateTime.Now,
+                DeadLine = DateTime.Now.AddDays(7),
                 EstimationTime = 100
             };
             channel.CreateToDo(name, rowFour);
@@ -181,7 +184,7 @@ namespace ToDoConsole
                 Description = "Detta har vi gjort!",
                 CreatedDate = DateTime.Now,
                 Finnished = true,
-                DeadLine = DateTime.Now,
+                DeadLine = DateTime.Now.AddDays(2),
                 EstimationTime = 100
             };
             channel.CreateToDo(name, rowFive);
@@ -196,8 +199,14 @@ namespace ToDoConsole
             Console.WriteLine($"There is {channel.CountToDoImportant(name)} important items in the {name} list.");
             ViewWebInstructions($"/todo/{name}/count/important");
             Console.WriteLine();
-            Console.WriteLine("DemoGetToDoImportant Calling GetToDoImportant - only important items");
 
+            Console.WriteLine("DemoGetToDoImportant Calling CountDoneImportant");
+            Console.WriteLine($"There is {channel.CountToDoImportant(name)} DONE important items in the {name} list.");
+            ViewWebInstructions($"/todo/{name}/count/important");
+            Console.WriteLine();
+
+
+            Console.WriteLine("DemoGetToDoImportant Calling GetToDoImportant - only important items");
             aToDo = channel.GetToDoImportant(name);
             ViewToDoItems(aToDo, "GetToDoImportant", name);
             ViewWebInstructions($"/todo/{name}/important");
@@ -209,14 +218,78 @@ namespace ToDoConsole
             ViewWebInstructions($"/getdone/{name}/important");
             Console.WriteLine();
 
+            Console.WriteLine("DemoGetToDoImportant Calling GetNotDone");
+            aToDo = channel.GetNotDone(name);
+            ViewToDoItems(aToDo, "GetNotDone", name);
+            ViewWebInstructions($"/getnotdone/{name}");
+            Console.WriteLine();
 
+
+            Console.WriteLine("DemoGetToDoImportant Calling GetNotDoneImportant");
+            aToDo = channel.GetNotDoneImportant(name);
+            ViewToDoItems(aToDo, "GetNotDoneImportant", name);
+            ViewWebInstructions($"/getnotdone/{name}/important");
+            Console.WriteLine();
+
+         
 
 
 
 
         }
 
+        static void DemoGetEstimate(IToDoService channel, string name)
+        {
+            Console.WriteLine();
+            Console.WriteLine("DemoGetEstimate Calling GetEstimate - for all the items");
+            var estimate = channel.GetEstimate(name);
+            Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the items in {name}");
+            Console.WriteLine($"so it will be done at {estimate.CompletedAt.ToString("yyyy-MM-dd HH:mm")}");
+            ViewWebInstructions($"/todo/{name}/estimate");
 
+            Console.WriteLine();
+            Console.WriteLine("DemoGetEstimate Calling GetEstimateImportant - for IMPORTANT items");
+            estimate = channel.GetEstimateImportant(name);
+            Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the IMPORTANT items in {name}");
+            Console.WriteLine($"so it will be done at {estimate.CompletedAt.Date.ToString("yyyy-MM-dd HH:mm")}");
+            ViewWebInstructions($"/todo/{name}/estimate/important");
+
+
+            Console.WriteLine();
+            Console.WriteLine("DemoGetEstimate Calling GetEstimateNotDone - for all the items");
+            estimate = channel.GetEstimateNotDone(name);
+            Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the NOT DONE items in {name}");
+            Console.WriteLine($"so it will be done at {estimate.CompletedAt.ToString("yyyy-MM-dd HH:mm")}");
+            ViewWebInstructions($"/getnotdone/{name}/estimate");
+
+            Console.WriteLine();
+            Console.WriteLine("DemoGetEstimate Calling GetEstimateNotDoneImportant - for IMPORTANT items");
+            estimate = channel.GetEstimateNotDoneImportant(name);
+            Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the NOT DONE IMPORTANT items in {name}");
+            Console.WriteLine($"so it will be done at {estimate.CompletedAt.Date.ToString("yyyy-MM-dd HH:mm")}");
+            ViewWebInstructions($"/getnotdone/{name}/estimate/important");
+
+
+
+        }
+
+        static void DemoGetToDoPriority(IToDoService channel, string name)
+        {
+            Console.WriteLine();
+            Console.WriteLine("DemoGetToDoPriority Calling GetToDoPriority - for all the items");
+            var aToDo = channel.GetToDoPriority(name);
+            ViewToDoItems(aToDo, "GetToDoPriority", name);
+            ViewWebInstructions($"/todo/{name}/priority");
+
+            Console.WriteLine();
+            Console.WriteLine("DemoGetToDoPriority Calling GetToDoPriorityImportant - for IMPORTANT items");
+            aToDo = channel.GetToDoPriorityImportant(name);
+            ViewToDoItems(aToDo, "GetToDoPriorityImportant", name);
+            ViewWebInstructions($"/todo/{name}/priority/important");
+
+
+
+        }
 
 
         // Test the GetDone WCF method
@@ -421,50 +494,6 @@ namespace ToDoConsole
 
 
         }
-
-
-        // Test the EditToDo WCF method
-        static void DemoEditToDo(IToDoService channel,
-                                 string id,
-                                 string description,
-                                 string name,
-                                 string deadLine,
-                                 string estimationTime,
-                                 string finnished)
-        {
-            
-            Console.WriteLine("Calling EditToDo via HTTP PUT: ");
-
-            // This is it! We are using the WCF service method GetToDo through the channel object.
-            // The method is returning a list of ToDo objects.
-            //channel.
-
-            // Print out some information/properties from the todo item
-            //ViewToDoItems(aToDo, "donelist", name);
-
-
-            // This is it! We are using the WCF service method GetToDo through the channel object.
-            // The method is returning a list of ToDo objects.
-            //channel.EditToDo(id, description, name, deadLine, estimationTime, finnished);
-            string cannotChangeThese = channel.EditToDo(id, description, name, deadLine, estimationTime, finnished);
-            if (cannotChangeThese == "")
-            {
-                Console.WriteLine("All values are now changed.");
-            }
-            else
-            {
-                Console.WriteLine("Error! Cannot change : " + cannotChangeThese);
-            }
-            
-
-            // Print out some information/properties from the todo item
-            //ViewToDoItems(aToDo, "todolist", name);
-
-            // Display how to access them via uri
-            ViewWebInstructions($"/EditToDo/{id}/{description}/{name}/{deadLine}/{estimationTime}/{finnished}");
-
-        }
-
 
 
         // Shows instructions to the user of our console application that the information
