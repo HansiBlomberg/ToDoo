@@ -104,6 +104,26 @@ namespace WcfToDoService
                       Method = "DELETE", UriTemplate = "todo/{name}/{id}")]
         bool DeleteToDoByID(string name, string id);
 
+
+        //Som utvecklare av frontend vill 
+        //jag kunna redigera punkter som redan
+        //finns i min todo
+        [OperationContract]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json,
+                   RequestFormat = WebMessageFormat.Json,
+                   //Method = "PUT", UriTemplate = "EditToDo/{id}/{description}/{name}/{deadLine}/{estimationTime}/{finnished}")]
+                   //Method = "PUT", UriTemplate = "EditToDo/{id}/{description=default}/{name=default}")]
+                   Method = "PUT", UriTemplate = "EditToDo/{id}/{description=default}/{name=default}/{deadLine=default}/{estimationTime=default}/{finnished=default}")]
+        string EditToDo(string id,
+                      string description,
+                      string name,
+                      string deadLine,
+                      string estimationTime,
+                      string finnished);
+
+
+
+
     }
 
     // The class below is just an example from the tutorial, not used by our application.
