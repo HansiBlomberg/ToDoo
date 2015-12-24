@@ -300,6 +300,105 @@ namespace WcfToDoService
         }
 
 
+        public string EditToDo(string id,
+                     string description,
+                     string name,
+                     string deadLine,
+                     string estimationTime,
+                     string finnished)
+        {
+            int _id;
+            Int32.TryParse(id, out _id);
+            var toDoOld = ourDataAccessLayer.GetToDoById(_id);
+            var toDoNew = new ToDo();
+
+            toDoNew = toDoOld;
+            //toDoNew.Id = _id;
+
+
+            if (description != "default")
+            {
+                toDoNew.Description = description;
+            }
+
+
+            if (name != "default")
+            {
+                toDoNew.Name = name;
+            }
+
+
+
+            if (deadLine != "default")
+            {
+                try
+                {
+                    toDoNew.DeadLine = Convert.ToDateTime(deadLine);
+                }
+                catch
+                {
+                    Console.WriteLine("Fel format på DeadLine");
+                }
+            }
+
+
+
+            int _estimationTime;
+            if (estimationTime != "default" && (Int32.TryParse(estimationTime, out _estimationTime)))
+            {
+                toDoNew.EstimationTime = _estimationTime;
+            }
+
+
+
+
+            if (finnished != "default")
+            {
+                finnished = finnished.ToLower();
+                if (finnished == "true")
+                {
+                    toDoNew.Finnished = true;
+                }
+                else if (finnished == "false")
+                {
+                    toDoNew.Finnished = false;
+                }
+            }
+
+
+
+            ourDataAccessLayer.UpdateToDo(toDoNew);
+            string cannotChangeThese = "";
+            var after = ourDataAccessLayer.GetToDoById(_id);
+            if (description != after.Description && description != "default")
+            {
+                cannotChangeThese = cannotChangeThese + "Description";
+            }
+
+            if (name != after.Name && name != "default")
+            {
+                cannotChangeThese = cannotChangeThese + " Name";
+            }
+
+            if (toDoNew.DeadLine != after.DeadLine && deadLine != "default")
+            {
+                cannotChangeThese = cannotChangeThese + " DeadLine";
+            }
+
+            if (estimationTime != after.EstimationTime.ToString() && estimationTime != "default")
+            {
+                cannotChangeThese = cannotChangeThese + " EstimationTime";
+            }
+
+            if (finnished.ToLower() != after.Finnished.ToString().ToLower() && finnished != "default")
+            {
+                cannotChangeThese = cannotChangeThese + " Finnished";
+            }
+
+            return cannotChangeThese;
+
+
+        } // EditToDo slutar här
 
 
         // This is just a sample method, that shows how to return a "composite" type

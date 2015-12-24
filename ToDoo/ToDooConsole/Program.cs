@@ -74,6 +74,7 @@ namespace ToDoConsole
 
                     DemoDeleteToDo(channel, "Michele");
 
+                    DemoEditToDo(channel, "2", "Jogga varje dag", "Tobbe", "2015-12-31", "60", "true");
 
                     
 
@@ -492,6 +493,49 @@ namespace ToDoConsole
             if (channel.DeleteToDoByName(name)) Console.WriteLine($"Successfully removed all todos with name {name} from the database.");
             else Console.WriteLine($"Tried to remove all todos for {name} but failed, or someone else managed to add new todos at the same time");
 
+
+        }
+
+
+        // Test the EditToDo WCF method
+        static void DemoEditToDo(IToDoService channel,
+                                 string id,
+                                 string description,
+                                 string name,
+                                 string deadLine,
+                                 string estimationTime,
+                                 string finnished)
+        {
+
+            Console.WriteLine("Calling EditToDo via HTTP PUT: ");
+
+            // This is it! We are using the WCF service method GetToDo through the channel object.
+            // The method is returning a list of ToDo objects.
+            //channel.
+
+            // Print out some information/properties from the todo item
+            //ViewToDoItems(aToDo, "donelist", name);
+
+
+            // This is it! We are using the WCF service method GetToDo through the channel object.
+            // The method is returning a list of ToDo objects.
+            //channel.EditToDo(id, description, name, deadLine, estimationTime, finnished);
+            string cannotChangeThese = channel.EditToDo(id, description, name, deadLine, estimationTime, finnished);
+            if (cannotChangeThese == "")
+            {
+                Console.WriteLine("All values are now changed.");
+            }
+            else
+            {
+                Console.WriteLine("Error! Cannot change : " + cannotChangeThese);
+            }
+
+
+            // Print out some information/properties from the todo item
+            //ViewToDoItems(aToDo, "todolist", name);
+
+            // Display how to access them via uri
+            ViewWebInstructions($"/EditToDo/{id}/{description}/{name}/{deadLine}/{estimationTime}/{finnished}");
 
         }
 
