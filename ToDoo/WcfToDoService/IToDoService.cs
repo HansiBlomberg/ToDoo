@@ -86,17 +86,19 @@ namespace WcfToDoService
         bool? IsToDoDone(string name, string id);
 
 
-        
-        [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json,
-                UriTemplate = "todo/{name}/{id}/notdone")]
-        bool MarkToDoNotDone(string name, string id);
-
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
                     RequestFormat = WebMessageFormat.Json,
                     Method = "PUT", UriTemplate = "todo/{name}/{id}/notdone/")]
+        bool MarkToDoNotDone(string name, string id);
+
+
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json,
+                UriTemplate = "todo/{name}/{id}/notdone")]
         bool? IsToDoNotDone(string name, string id);
+
+        
 
 
 
