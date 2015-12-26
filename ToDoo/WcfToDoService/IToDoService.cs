@@ -71,8 +71,36 @@ namespace WcfToDoService
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
                     RequestFormat = WebMessageFormat.Json,
-                    Method = "PUT", UriTemplate = "todo/{name}/new")]
+                    Method = "POST", UriTemplate = "todo/{name}/new")]
         bool CreateToDo(string name, ToDo todo);
+
+        [OperationContract]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json,
+                    RequestFormat = WebMessageFormat.Json,
+                    Method = "PUT", UriTemplate = "todo/{name}/{id}/done")]
+        bool MarkToDoDone(string name, string id);
+
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json,
+                UriTemplate = "todo/{name}/{id}/done")]
+        bool? IsToDoDone(string name, string id);
+
+
+        
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json,
+                UriTemplate = "todo/{name}/{id}/notdone")]
+        bool MarkToDoNotDone(string name, string id);
+
+        [OperationContract]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json,
+                    RequestFormat = WebMessageFormat.Json,
+                    Method = "PUT", UriTemplate = "todo/{name}/{id}/notdone/")]
+        bool? IsToDoNotDone(string name, string id);
+
+
+
+
 
         // Som utvecklare av frontend vill jag att det skapas flera punkter om jag
         // skickar en kommaseparerad lista som innehåll på en punkt.Ex: Äpple,

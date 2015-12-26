@@ -299,6 +299,77 @@ namespace WcfToDoService
             return new Estimate { TotalTime = totalTime, CompletedAt = DateTime.Now.AddMinutes(totalTime) };
         }
 
+        
+        public bool MarkToDoDone(string name, string id)
+        {
+            int _id;
+            if ( int.TryParse(id, out _id))
+            {
+                var aToDo = ourDataAccessLayer.GetToDoById(_id);
+                if (aToDo == null) return false;
+                if (aToDo.Name == null) return false;
+                if (aToDo.Name == name)
+                {
+                    aToDo.Finnished = true;
+                    ourDataAccessLayer.UpdateToDo(aToDo);
+                    aToDo = ourDataAccessLayer.GetToDoById(_id);
+                    return aToDo.Finnished;
+                }
+            }
+            return false;
+        }
+
+        public bool? IsToDoDone(string name, string id)
+        {
+            int _id;
+            if( int.TryParse(id, out _id))
+            {
+                var aToDo = ourDataAccessLayer.GetToDoById(_id);
+                if (aToDo == null) return null;
+                if (aToDo.Name == null) return null;
+                if (aToDo.Name == name)
+                    return aToDo.Finnished;
+            }
+            return null;
+            
+        }
+
+        public bool MarkToDoNotDone(string name, string id)
+        {
+            int _id;
+            if (int.TryParse(id, out _id))
+            {
+                var aToDo = ourDataAccessLayer.GetToDoById(_id);
+                if (aToDo == null) return false;
+                if (aToDo.Name == null) return false;
+                if (aToDo.Name == name)
+                {
+                    aToDo.Finnished = false;
+                    ourDataAccessLayer.UpdateToDo(aToDo);
+                    aToDo = ourDataAccessLayer.GetToDoById(_id);
+                    return !aToDo.Finnished;
+                }
+            }
+            return false;
+        }
+
+
+        public bool? IsToDoNotDone(string name, string id)
+        {
+
+            var isItDone = IsToDoDone(name, id);
+
+            if (isItDone != null)
+                return !isItDone;
+            else return null;
+        }
+
+        
+
+
+
+
+
 
         public bool EditToDo(string id,
                                string description,

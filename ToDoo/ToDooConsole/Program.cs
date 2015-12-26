@@ -74,6 +74,10 @@ namespace ToDoConsole
 
                     DemoDeleteToDo(channel, "Michele");
 
+                    DemoSetAndCheckIfSomethingIsDone(channel, "MrDoer");
+
+
+
                     // Här testar man DemoEditToDo
                     Console.WriteLine("Mata in ett ID: ");
                     string myId = Console.ReadLine();
@@ -254,6 +258,142 @@ namespace ToDoConsole
 
 
         }
+
+
+        static void DemoSetAndCheckIfSomethingIsDone(IToDoService channel, string name)
+        {
+
+            Console.WriteLine("****************************************");
+            Console.WriteLine("This is DemoSetAndCheckIfSomethingIsDone");
+            Console.WriteLine("****************************************");
+            Console.WriteLine();
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone clearing out test data for todolist {name}");
+            DeleteToDoByName(channel, name);
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone creating test data for todolist {name}");
+            ToDo rowOne = new ToDo()
+            {
+                Name = name,
+                Description = "Inte viktigt",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now.AddDays(10),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowOne);
+
+
+            ToDo rowTwo = new ToDo()
+            {
+                Name = name,
+                Description = "Viktigt!",
+                CreatedDate = DateTime.Now,
+                Finnished = true,
+                DeadLine = DateTime.Now.AddDays(20),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowTwo);
+
+
+            ToDo rowThree = new ToDo()
+            {
+                Name = name,
+                Description = "Gör detta nu!",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now.AddDays(5),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowThree);
+
+
+            ToDo rowFour = new ToDo()
+            {
+                Name = name,
+                Description = "Gör detta senare...",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now.AddDays(7),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowFour);
+
+            ToDo rowFive = new ToDo()
+            {
+                Name = name,
+                Description = "Detta har vi gjort!",
+                CreatedDate = DateTime.Now,
+                Finnished = true,
+                DeadLine = DateTime.Now.AddDays(2),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowFive);
+
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone fetching list of stuff to do for {name}");
+            var someStuffToDo = channel.GetToDo(name);
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone printing all that is not done for {name}");
+            var someNotDoneStuff = channel.GetNotDone(name);
+            ViewToDoItems(someNotDoneStuff, "DemoSetAndCheckIfSomethingIsDone", name);
+            
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone printing all that IS done for {name}");
+            var someDoneStuff = channel.GetDone(name);
+            ViewToDoItems(someDoneStuff, "DemoSetAndCheckIfSomethingIsDone", name);
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone trying if items are Finnished = true for {name}");
+            foreach(var yetAnotherTodo in someStuffToDo)
+                Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it finished? {channel.IsToDoDone(name, yetAnotherTodo.Id.ToString())}");
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone trying if items are Finnished = false for {name}");
+            foreach (var yetAnotherTodo in someStuffToDo)
+            {
+                Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it NOT finished? {channel.IsToDoNotDone(name, yetAnotherTodo.Id.ToString())}");
+                ViewWebInstructions($"todo/{name}/{yetAnotherTodo.Id.ToString()}/notdone");
+            }
+
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone setting all previously DONE items to finnished=false for {name}");
+            foreach (var yetAnotherTodo in someDoneStuff)
+                channel.MarkToDoNotDone(name, yetAnotherTodo.Id.ToString());
+                
+            
+                Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone setting all previously NOT DONE items to finnished=true for {name}");
+            foreach (var yetAnotherTodo in someNotDoneStuff)
+                channel.MarkToDoDone(name, yetAnotherTodo.Id.ToString());
+
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone trying if items are Finnished = true for {name}");
+            foreach (var yetAnotherTodo in someStuffToDo)
+            {
+                Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it finished? {channel.IsToDoDone(name, yetAnotherTodo.Id.ToString())}");
+                ViewWebInstructions($"todo/{name}/{yetAnotherTodo.Id.ToString()}/done");
+            }
+
+                Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone trying if items are Finnished = false for {name}");
+            foreach (var yetAnotherTodo in someStuffToDo)
+                Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it NOT finished? {channel.IsToDoNotDone(name, yetAnotherTodo.Id.ToString())}");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+
 
         static void DemoGetEstimate(IToDoService channel, string name)
         {
