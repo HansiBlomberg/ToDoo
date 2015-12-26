@@ -90,6 +90,23 @@ namespace ToDoConsole
 
 
 
+                    // Testing the "GetNumberOfToDoos" method
+                    string _name = "Hamid";
+                    string _numberOfToDoos = channel.GetNumberOfToDoos(_name).ToString();
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("GetNumberOfToDoos:");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine($"There are this many todoos in the {_name} list: {_numberOfToDoos}");
+
+                    // Testing the "GetNumberOfMarkedToDoos" method
+                    string _numberOfMarkedToDoos = channel.GetNumberOfMarkedToDoos(_name).ToString();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("GetNumberOfMarkedToDoos:");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine($"There are this many marked todoos in the {_name} list: {_numberOfMarkedToDoos}");
+                    Console.WriteLine("");
+
+
                     //
                     //  Test the CreateToDo WCF method.
                     //

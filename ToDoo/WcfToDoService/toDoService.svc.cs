@@ -87,6 +87,31 @@ namespace WcfToDoService
                       
         }
 
+        public int GetNumberOfToDoos(string name)
+        {
+            // Get the number of ToDoos with a specific name
+            List<ToDo> toDoos = ourDataAccessLayer.GetToDoListByName(name);
+            return toDoos.Count;
+        }
+
+        public int GetNumberOfMarkedToDoos(string name)
+        {
+            // Get the number of ToDoos with a specific name
+            List<ToDo> toDoos = ourDataAccessLayer.GetToDoListByName(name);
+            int _count = 0;
+            for (int i = 0; i < toDoos.Count; i++)
+            {
+                if (toDoos[i].Finnished)
+                {
+                    _count++;
+                }
+            }
+
+            return _count;
+        }
+
+
+
         public bool CreateToDo(string name, ToDo todo)
         {
 
