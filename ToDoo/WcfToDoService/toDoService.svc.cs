@@ -7,9 +7,11 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using System.Xml;
+using System.Configuration;
+using System.Data;
 using ToDoBase;
 using ToDoDAL;
-
+using System.Web.Configuration;
 
 namespace WcfToDoService
 {
@@ -46,8 +48,11 @@ namespace WcfToDoService
         // will be used by our methods. 
         public ToDoService()
         {
-            
-             ourDataAccessLayer = new DAL(getConnectionStringFromXML(configurationFileName));
+
+            string connectionString = getConnectionStringFromWebConfig();
+            if (connectionString == null)
+                connectionString = getConnectionStringFromXML(configurationFileName);
+             ourDataAccessLayer = new DAL(connectionString);
             
         }
 
@@ -67,6 +72,24 @@ namespace WcfToDoService
 
         }
 
+
+        private static string getConnectionStringFromWebConfig()
+        {
+
+            try
+            {
+                return ConfigurationManager.ConnectionStrings["ToDooConnection"].ConnectionString;
+            }
+
+            catch
+            {
+                return null;
+            }
+            
+            
+        }
+        
+        
         // This is just for play and debug
         // give the correct password and receive the connection string
         public string RevealAllMySecrets(string password)
