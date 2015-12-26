@@ -74,9 +74,25 @@ namespace ToDoConsole
 
                     DemoDeleteToDo(channel, "Michele");
 
-                    DemoEditToDo(channel, "2", "Jogga varje dag", "Tobbe", "2015-12-31", "60", "true");
+                    // Här testar man DemoEditToDo
+                    Console.WriteLine("Mata in ett ID: ");
+                    string myId = Console.ReadLine();
+                    Console.WriteLine("Mata in en uppgift: ");
+                    string desc = Console.ReadLine();
+                    Console.WriteLine("Mata in ett namn: ");
+                    string name = Console.ReadLine();
+                    Console.WriteLine("Mata in ett deadLine: ");
+                    string deadLine = Console.ReadLine();
+                    Console.WriteLine("Mata in ett estimationTime: ");
+                    string estimationTime = Console.ReadLine();
+                    Console.WriteLine("Mata in ett finnished: ");
+                    string finnished = Console.ReadLine();
+                    DemoEditToDo(channel, myId, desc, name, deadLine, estimationTime, finnished);
 
-                    
+
+
+
+
 
                 }
 
@@ -84,7 +100,7 @@ namespace ToDoConsole
                 // Let the console application run until the user choose to terminate
                 // This is because the user might want the service to keep running
                 // and therefore be able to test it using other tools or applications.
-                
+
                 Console.WriteLine("Press <ENTER> to terminate");
                 Console.ReadLine();
 
@@ -507,37 +523,30 @@ namespace ToDoConsole
                                  string finnished)
         {
 
-            Console.WriteLine("Calling EditToDo via HTTP PUT: ");
+            Console.WriteLine("\n\nCalling EditToDo via HTTP PUT: ");
 
-            // This is it! We are using the WCF service method GetToDo through the channel object.
-            // The method is returning a list of ToDo objects.
-            //channel.
+            bool status = false;
+            status = channel.EditToDo(id, description, name, deadLine, estimationTime, finnished);
 
-            // Print out some information/properties from the todo item
-            //ViewToDoItems(aToDo, "donelist", name);
-
-
-            // This is it! We are using the WCF service method GetToDo through the channel object.
-            // The method is returning a list of ToDo objects.
-            //channel.EditToDo(id, description, name, deadLine, estimationTime, finnished);
-            string cannotChangeThese = channel.EditToDo(id, description, name, deadLine, estimationTime, finnished);
-            if (cannotChangeThese == "")
+            if (status != true)
             {
-                Console.WriteLine("All values are now changed.");
+                Console.WriteLine("Det gick inte att köra EditToDo");
             }
             else
             {
-                Console.WriteLine("Error! Cannot change : " + cannotChangeThese);
+                Console.WriteLine("Det gick BRA att köra EditToDo");
             }
 
-
-            // Print out some information/properties from the todo item
-            //ViewToDoItems(aToDo, "todolist", name);
-
+            if (id == "") { id = "%20"; } else { id = Uri.EscapeDataString(id); }
+            if (description == "") { description = "%20"; } else { description = Uri.EscapeDataString(description); }
+            if (name == "") { name = "%20"; } else { name = Uri.EscapeDataString(name); }
+            if (deadLine == "") { deadLine = "%20"; } else { deadLine = Uri.EscapeDataString(deadLine); }
+            if (estimationTime == "") { estimationTime = "%20"; } else { estimationTime = Uri.EscapeDataString(estimationTime); }
+            if (finnished == "") { finnished = "%20"; } else { finnished = Uri.EscapeDataString(finnished); }
             // Display how to access them via uri
             ViewWebInstructions($"/EditToDo/{id}/{description}/{name}/{deadLine}/{estimationTime}/{finnished}");
 
-        }
+        } // EditToDo WCF method slutar här
 
 
         // Shows instructions to the user of our console application that the information

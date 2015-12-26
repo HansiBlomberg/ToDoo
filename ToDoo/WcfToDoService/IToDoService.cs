@@ -163,17 +163,17 @@ namespace WcfToDoService
         //jag kunna redigera punkter som redan
         //finns i min todo
         [OperationContract]
-        [WebInvoke(ResponseFormat = WebMessageFormat.Json,
+        /*[WebInvoke(ResponseFormat = WebMessageFormat.Json,
                    RequestFormat = WebMessageFormat.Json,
-                   //Method = "PUT", UriTemplate = "EditToDo/{id}/{description}/{name}/{deadLine}/{estimationTime}/{finnished}")]
-                   //Method = "PUT", UriTemplate = "EditToDo/{id}/{description=default}/{name=default}")]
-                   Method = "PUT", UriTemplate = "EditToDo/{id}/{description=default}/{name=default}/{deadLine=default}/{estimationTime=default}/{finnished=default}")]
-        string EditToDo(string id,
-                      string description,
-                      string name,
-                      string deadLine,
-                      string estimationTime,
-                      string finnished);
+                   Method = "PUT", UriTemplate = "EditToDo/{id}/{description}")]*/
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "EditToDo/{id=%20}/{description=%20}/{name=%20}/{deadLine=%20}/{estimationTime=%20}/{finnished=%20}")]
+        bool EditToDo(string id,
+                        string description,
+                        string name,
+                        string deadLine,
+                        string estimationTime,
+                        string finnished);
+
 
 
     }
