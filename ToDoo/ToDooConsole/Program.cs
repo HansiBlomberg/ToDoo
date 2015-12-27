@@ -68,7 +68,7 @@ namespace ToDoConsole
 
                     DemoCreateToDoCSV(channel, "MrCSVTester");
 
-                    DemoRevealAllMySecrets(channel);
+                   //  DemoRevealAllMySecrets(channel);
 
                     DemoGetDone(channel, "Chow");
 
@@ -349,7 +349,7 @@ namespace ToDoConsole
             foreach (var yetAnotherTodo in someStuffToDo)
             {
                 Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it NOT finished? {channel.IsToDoNotDone(name, yetAnotherTodo.Id.ToString())}");
-                ViewWebInstructions($"todo/{name}/{yetAnotherTodo.Id.ToString()}/notdone");
+                ViewWebInstructions($"/todo/{name}/{yetAnotherTodo.Id.ToString()}/notdone");
             }
 
 
@@ -367,28 +367,12 @@ namespace ToDoConsole
             foreach (var yetAnotherTodo in someStuffToDo)
             {
                 Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it finished? {channel.IsToDoDone(name, yetAnotherTodo.Id.ToString())}");
-                ViewWebInstructions($"todo/{name}/{yetAnotherTodo.Id.ToString()}/done");
+                ViewWebInstructions($"/todo/{name}/{yetAnotherTodo.Id.ToString()}/done");
             }
 
                 Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone trying if items are Finnished = false for {name}");
             foreach (var yetAnotherTodo in someStuffToDo)
                 Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it NOT finished? {channel.IsToDoNotDone(name, yetAnotherTodo.Id.ToString())}");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         }
@@ -556,7 +540,7 @@ namespace ToDoConsole
 
 
             // Here we do the call to actually create the ToDo-item using the WCF CreateToDO method
-            if (channel.CreateToDo(name, aNewToDoItem))
+            if (channel.CreateToDo(name, aNewToDoItem) != null)
             {
                 // This is the success message. It should be successful.
                 Console.WriteLine($"Vi lyckades lägga till ett todo item med namn {aNewToDoItem.Name}");
@@ -571,7 +555,7 @@ namespace ToDoConsole
             // To demonstrate, we try to create another ToDO-item, but because the CreateToDO method
             // will refuse to add Items if the name parameter (Chaplin in this case) is not the same
             // as the aNewToDoItem.Name (CHarlie in this case)
-            if (channel.CreateToDo(name+"other", aNewToDoItem))
+            if (channel.CreateToDo(name+"other", aNewToDoItem) != null)
             {
                 Console.WriteLine($"Vi lyckades lägga till ett todo item med namn {aNewToDoItem.Name}");
             }
@@ -632,14 +616,14 @@ namespace ToDoConsole
             Console.WriteLine($"Item with {lastId} deleted");
         }
 
-        // Testing the RevealALlMySecrets WCF method
-        static void DemoRevealAllMySecrets(IToDoService channel)
-        {
-            Console.WriteLine("Calling RevealAllMySecrets via HTTP GET: ");
-            var returnedString = channel.RevealAllMySecrets("wrong_password");
-            Console.WriteLine($"   Output: {returnedString}");
-            Console.WriteLine();
-        }
+        //// Testing the RevealALlMySecrets WCF method
+        //static void DemoRevealAllMySecrets(IToDoService channel)
+        //{
+        //    Console.WriteLine("Calling RevealAllMySecrets via HTTP GET: ");
+        //    var returnedString = channel.RevealAllMySecrets("wrong_password");
+        //    Console.WriteLine($"   Output: {returnedString}");
+        //    Console.WriteLine();
+        //}
 
         static void DeleteToDoByName(IToDoService channel, string name)
         {

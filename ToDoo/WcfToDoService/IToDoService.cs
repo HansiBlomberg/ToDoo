@@ -64,15 +64,15 @@ namespace WcfToDoService
 
 
 
-        [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "RevealAllMySecrets/{password}")]
-        string RevealAllMySecrets(string password);
+        //[OperationContract]
+        //[WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "RevealAllMySecrets/{password}")]
+        //string RevealAllMySecrets(string password);
 
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
                     RequestFormat = WebMessageFormat.Json,
                     Method = "POST", UriTemplate = "todo/{name}/new")]
-        bool CreateToDo(string name, ToDo todo);
+        int? CreateToDo(string name, ToDo todo);
 
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
