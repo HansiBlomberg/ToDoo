@@ -12,11 +12,9 @@ using System.Data;
 using ToDoBase;
 using ToDoDAL;
 using System.Web.Configuration;
-//using System.Web.Script.Serialization;
 
 namespace WcfToDoService
 {
-    
     public class ToDoService : IToDoService
     {
 
@@ -304,8 +302,6 @@ namespace WcfToDoService
 
             try
             {
-                //JavaScriptSerializer serializer = new JavaScriptSerializer();
-                //ToDo todo = serializer.Deserialize<ToDo>(_todo);
                 todo.Finnished = true;
                 ourDataAccessLayer.UpdateToDo(todo);
                 return true;
