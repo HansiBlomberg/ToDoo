@@ -72,7 +72,7 @@ namespace WcfToDoService
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
                     RequestFormat = WebMessageFormat.Json,
                     Method = "POST", UriTemplate = "todo/{name}/new")]
-        int? CreateToDo(string name, ToDo todo);
+        int CreateToDo(string name, ToDo todo);
 
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
@@ -83,7 +83,7 @@ namespace WcfToDoService
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json,
                 UriTemplate = "todo/{name}/{id}/done")]
-        bool? IsToDoDone(string name, string id);
+        bool IsToDoDone(string name, string id);
 
 
         [OperationContract]
@@ -96,7 +96,7 @@ namespace WcfToDoService
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json,
                 UriTemplate = "todo/{name}/{id}/notdone")]
-        bool? IsToDoNotDone(string name, string id);
+        bool IsToDoNotDone(string name, string id);
 
         
 

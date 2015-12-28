@@ -171,7 +171,7 @@ namespace WcfToDoService
         }
 
 
-        public int? CreateToDo(string name, ToDo todo)
+        public int CreateToDo(string name, ToDo todo)
         {
 
             // We are about to create a ToDo-item in the database
@@ -179,7 +179,7 @@ namespace WcfToDoService
             // Such as checking if name == ToDo.Name?
                                     
             // Because we really really want the todo to have the same Name property as specified by the name parameter to this method.
-            if (name != todo.Name) return null;
+            if (name != todo.Name) return -1;
 
             // We dont care what CreatedDate came with the todo parameter. We will use the current Date and Time!
             todo.CreatedDate = DateTime.Now;
@@ -191,7 +191,7 @@ namespace WcfToDoService
             var tempToDoList = ourDataAccessLayer.GetToDoListByName(todo.Name); // Get the existing todo list
             foreach(var t in tempToDoList)
             {
-                if (t == todo) return null; // If there is an existing todo list with same information, dont insert the new one :-)
+                if (t == todo) return -1; // If there is an existing todo list with same information, dont insert the new one :-)
             }
 
             ourDataAccessLayer.AddToDo(todo);  // (try to...) Save the ToDo-item to the database!!
@@ -202,7 +202,7 @@ namespace WcfToDoService
                 if (t == todo) return t.Id; // This time, we DO want to find our todo list in the database, if so return its Id
             }
 
-            return null;  // Something went wrong, the todo list did never make it to the database
+            return -1;  // Something went wrong, the todo list did never make it to the database
         }
 
 
@@ -245,7 +245,7 @@ namespace WcfToDoService
             bool didEverythingGetAdded = true;
             foreach (var toDo in toDoList)
             {
-                if (CreateToDo(name, toDo) == null) didEverythingGetAdded = false;
+                if (CreateToDo(name, toDo) == -1) didEverythingGetAdded = false;
             }
 
             return didEverythingGetAdded;
@@ -342,18 +342,18 @@ namespace WcfToDoService
             return false;
         }
 
-        public bool? IsToDoDone(string name, string id)
+        public bool IsToDoDone(string name, string id)
         {
             int _id;
             if( int.TryParse(id, out _id))
             {
                 var aToDo = ourDataAccessLayer.GetToDoById(_id);
-                if (aToDo == null) return null;
-                if (aToDo.Name == null) return null;
+                if (aToDo == null) return false; // I hate to do this
+                if (aToDo.Name == null) return false; // but REST dont like nullable types at all :-(
                 if (aToDo.Name == name)
                     return aToDo.Finnished;
             }
-            return null;
+            return false;
             
         }
 
@@ -377,14 +377,11 @@ namespace WcfToDoService
         }
 
 
-        public bool? IsToDoNotDone(string name, string id)
+        public bool IsToDoNotDone(string name, string id)
         {
 
-            var isItDone = IsToDoDone(name, id);
-
-            if (isItDone != null)
-                return !isItDone;
-            else return null;
+            return !IsToDoDone(name, id);
+                                    
         }
 
         
