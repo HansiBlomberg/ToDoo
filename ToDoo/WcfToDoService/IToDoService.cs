@@ -204,6 +204,16 @@ namespace WcfToDoService
                         string estimationTime,
                         string finnished);
 
+        [OperationContract]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json,
+                   RequestFormat = WebMessageFormat.Json,
+                   Method = "PUT", UriTemplate = "todo/{name}/{id}/description/{description}")]
+        
+        bool ChangeToDoDescription(string id,
+                        string description,
+                        string name);
+
+
 
 
     }

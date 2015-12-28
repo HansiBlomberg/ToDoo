@@ -467,6 +467,29 @@ namespace WcfToDoService
         } // EditToDo slutar här
 
 
+
+        public bool ChangeToDoDescription(string id,
+                        string description,
+                        string name)
+        {
+
+            int _id;
+            if (!int.TryParse(id, out _id)) return false;
+
+            var aToDo = ourDataAccessLayer.GetToDoById(_id);
+            if (aToDo == null) return false;
+            if (aToDo.Name != name) return false;
+
+            aToDo.Description = description;
+            ourDataAccessLayer.UpdateToDo(aToDo);
+            aToDo = ourDataAccessLayer.GetToDoById(_id);
+            if (aToDo == null) return false;
+            if (aToDo.Description == description) return true;
+            return false;
+
+        }
+
+
         // This is just a sample method, that shows how to return a "composite" type
         // composite just means it is an object with several properties and not
         // just a regular datatype. "CompositeType" is just a class like any other.
