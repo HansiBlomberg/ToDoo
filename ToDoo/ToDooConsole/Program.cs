@@ -57,17 +57,46 @@ namespace ToDoConsole
                     // Demonstrate the methods
 
                     DemoGetToDo(channel, "Charlie");
+
+                    DemoGetToDoImportant(channel, "MrInAHurry");
+
+                    DemoGetEstimate(channel, "MrInAHurry");
+
+                    DemoGetToDoPriority(channel, "MrInAHurry");
                     
                     DemoCreateToDo(channel, "Charlie");
 
                     DemoCreateToDoCSV(channel, "MrCSVTester");
 
-                    DemoRevealAllMySecrets(channel);
+                   //  DemoRevealAllMySecrets(channel);
 
                     DemoGetDone(channel, "Chow");
 
                     DemoDeleteToDo(channel, "Michele");
-                    
+
+                    DemoSetAndCheckIfSomethingIsDone(channel, "MrDoer");
+
+
+
+                    // Här testar man DemoEditToDo
+                    Console.WriteLine("Mata in ett ID: ");
+                    string myId = Console.ReadLine();
+                    Console.WriteLine("Mata in en uppgift: ");
+                    string desc = Console.ReadLine();
+                    Console.WriteLine("Mata in ett namn: ");
+                    string name = Console.ReadLine();
+                    Console.WriteLine("Mata in ett deadLine: ");
+                    string deadLine = Console.ReadLine();
+                    Console.WriteLine("Mata in ett estimationTime: ");
+                    string estimationTime = Console.ReadLine();
+                    Console.WriteLine("Mata in ett finnished: ");
+                    string finnished = Console.ReadLine();
+                    DemoEditToDo(channel, myId, desc, name, deadLine, estimationTime, finnished);
+
+
+
+
+
 
                 }
 
@@ -75,7 +104,7 @@ namespace ToDoConsole
                 // Let the console application run until the user choose to terminate
                 // This is because the user might want the service to keep running
                 // and therefore be able to test it using other tools or applications.
-                
+
                 Console.WriteLine("Press <ENTER> to terminate");
                 Console.ReadLine();
 
@@ -112,7 +141,297 @@ namespace ToDoConsole
         }
 
 
-        
+        // Test the GetToDo WCF method
+        static void DemoGetToDoImportant(IToDoService channel, string name)
+        {
+
+            Console.WriteLine();
+            Console.WriteLine($"DemoGetToDoImportant clearing out test data for todolist {name}");
+            DeleteToDoByName(channel, name);
+
+
+
+            Console.WriteLine($"DemoGetToDoImportant creating test data for todolist {name}");
+            ToDo rowOne = new ToDo()
+            {
+                Name = name,
+                Description = "Inte viktigt",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now.AddDays(10),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowOne);
+
+
+            ToDo rowTwo = new ToDo()
+            {
+                Name = name,
+                Description = "Viktigt!",
+                CreatedDate = DateTime.Now,
+                Finnished = true,
+                DeadLine = DateTime.Now.AddDays(20),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowTwo);
+
+
+            ToDo rowThree = new ToDo()
+            {
+                Name = name,
+                Description = "Gör detta nu!",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now.AddDays(5),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowThree);
+
+
+            ToDo rowFour = new ToDo()
+            {
+                Name = name,
+                Description = "Gör detta senare...",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now.AddDays(7),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowFour);
+
+            ToDo rowFive = new ToDo()
+            {
+                Name = name,
+                Description = "Detta har vi gjort!",
+                CreatedDate = DateTime.Now,
+                Finnished = true,
+                DeadLine = DateTime.Now.AddDays(2),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowFive);
+
+
+            Console.WriteLine("DemoGetToDoImportant Calling GetToDo - this is all the items");
+            List<ToDo> aToDo = channel.GetToDo(name);
+            ViewToDoItems(aToDo, "GetToDo", name);
+
+
+            Console.WriteLine("DemoGetToDoImportant Calling CountToDoImportant");
+            Console.WriteLine($"There is {channel.CountToDoImportant(name)} important items in the {name} list.");
+            ViewWebInstructions($"/todo/{name}/count/important");
+            Console.WriteLine();
+
+            Console.WriteLine("DemoGetToDoImportant Calling CountDoneImportant");
+            Console.WriteLine($"There is {channel.CountToDoImportant(name)} DONE important items in the {name} list.");
+            ViewWebInstructions($"/todo/{name}/count/important");
+            Console.WriteLine();
+
+
+            Console.WriteLine("DemoGetToDoImportant Calling GetToDoImportant - only important items");
+            aToDo = channel.GetToDoImportant(name);
+            ViewToDoItems(aToDo, "GetToDoImportant", name);
+            ViewWebInstructions($"/todo/{name}/important");
+            Console.WriteLine();
+
+            Console.WriteLine("DemoGetToDoImportant Calling GetDoneImportant");
+            aToDo = channel.GetDoneImportant(name);
+            ViewToDoItems(aToDo, "GetDoneImportant", name);
+            ViewWebInstructions($"/getdone/{name}/important");
+            Console.WriteLine();
+
+            Console.WriteLine("DemoGetToDoImportant Calling GetNotDone");
+            aToDo = channel.GetNotDone(name);
+            ViewToDoItems(aToDo, "GetNotDone", name);
+            ViewWebInstructions($"/getnotdone/{name}");
+            Console.WriteLine();
+
+
+            Console.WriteLine("DemoGetToDoImportant Calling GetNotDoneImportant");
+            aToDo = channel.GetNotDoneImportant(name);
+            ViewToDoItems(aToDo, "GetNotDoneImportant", name);
+            ViewWebInstructions($"/getnotdone/{name}/important");
+            Console.WriteLine();
+
+         
+
+
+
+
+        }
+
+
+        static void DemoSetAndCheckIfSomethingIsDone(IToDoService channel, string name)
+        {
+
+            Console.WriteLine("****************************************");
+            Console.WriteLine("This is DemoSetAndCheckIfSomethingIsDone");
+            Console.WriteLine("****************************************");
+            Console.WriteLine();
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone clearing out test data for todolist {name}");
+            DeleteToDoByName(channel, name);
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone creating test data for todolist {name}");
+            ToDo rowOne = new ToDo()
+            {
+                Name = name,
+                Description = "Inte viktigt",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now.AddDays(10),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowOne);
+
+
+            ToDo rowTwo = new ToDo()
+            {
+                Name = name,
+                Description = "Viktigt!",
+                CreatedDate = DateTime.Now,
+                Finnished = true,
+                DeadLine = DateTime.Now.AddDays(20),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowTwo);
+
+
+            ToDo rowThree = new ToDo()
+            {
+                Name = name,
+                Description = "Gör detta nu!",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now.AddDays(5),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowThree);
+
+
+            ToDo rowFour = new ToDo()
+            {
+                Name = name,
+                Description = "Gör detta senare...",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now.AddDays(7),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowFour);
+
+            ToDo rowFive = new ToDo()
+            {
+                Name = name,
+                Description = "Detta har vi gjort!",
+                CreatedDate = DateTime.Now,
+                Finnished = true,
+                DeadLine = DateTime.Now.AddDays(2),
+                EstimationTime = 100
+            };
+            channel.CreateToDo(name, rowFive);
+
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone fetching list of stuff to do for {name}");
+            var someStuffToDo = channel.GetToDo(name);
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone printing all that is not done for {name}");
+            var someNotDoneStuff = channel.GetNotDone(name);
+            ViewToDoItems(someNotDoneStuff, "DemoSetAndCheckIfSomethingIsDone", name);
+            
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone printing all that IS done for {name}");
+            var someDoneStuff = channel.GetDone(name);
+            ViewToDoItems(someDoneStuff, "DemoSetAndCheckIfSomethingIsDone", name);
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone trying if items are Finnished = true for {name}");
+            foreach(var yetAnotherTodo in someStuffToDo)
+                Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it finished? {channel.IsToDoDone(name, yetAnotherTodo.Id.ToString())}");
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone trying if items are Finnished = false for {name}");
+            foreach (var yetAnotherTodo in someStuffToDo)
+            {
+                Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it NOT finished? {channel.IsToDoNotDone(name, yetAnotherTodo.Id.ToString())}");
+                ViewWebInstructions($"/todo/{name}/{yetAnotherTodo.Id.ToString()}/notdone");
+            }
+
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone setting all previously DONE items to finnished=false for {name}");
+            foreach (var yetAnotherTodo in someDoneStuff)
+                channel.MarkToDoNotDone(name, yetAnotherTodo.Id.ToString());
+                
+            
+                Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone setting all previously NOT DONE items to finnished=true for {name}");
+            foreach (var yetAnotherTodo in someNotDoneStuff)
+                channel.MarkToDoDone(name, yetAnotherTodo.Id.ToString());
+
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone trying if items are Finnished = true for {name}");
+            foreach (var yetAnotherTodo in someStuffToDo)
+            {
+                Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it finished? {channel.IsToDoDone(name, yetAnotherTodo.Id.ToString())}");
+                ViewWebInstructions($"/todo/{name}/{yetAnotherTodo.Id.ToString()}/done");
+            }
+
+                Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone trying if items are Finnished = false for {name}");
+            foreach (var yetAnotherTodo in someStuffToDo)
+                Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it NOT finished? {channel.IsToDoNotDone(name, yetAnotherTodo.Id.ToString())}");
+
+
+        }
+
+
+
+        static void DemoGetEstimate(IToDoService channel, string name)
+        {
+            Console.WriteLine();
+            Console.WriteLine("DemoGetEstimate Calling GetEstimate - for all the items");
+            var estimate = channel.GetEstimate(name);
+            Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the items in {name}");
+            Console.WriteLine($"so it will be done at {estimate.CompletedAt.ToString("yyyy-MM-dd HH:mm")}");
+            ViewWebInstructions($"/todo/{name}/estimate");
+
+            Console.WriteLine();
+            Console.WriteLine("DemoGetEstimate Calling GetEstimateImportant - for IMPORTANT items");
+            estimate = channel.GetEstimateImportant(name);
+            Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the IMPORTANT items in {name}");
+            Console.WriteLine($"so it will be done at {estimate.CompletedAt.Date.ToString("yyyy-MM-dd HH:mm")}");
+            ViewWebInstructions($"/todo/{name}/estimate/important");
+
+
+            Console.WriteLine();
+            Console.WriteLine("DemoGetEstimate Calling GetEstimateNotDone - for all the items");
+            estimate = channel.GetEstimateNotDone(name);
+            Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the NOT DONE items in {name}");
+            Console.WriteLine($"so it will be done at {estimate.CompletedAt.ToString("yyyy-MM-dd HH:mm")}");
+            ViewWebInstructions($"/getnotdone/{name}/estimate");
+
+            Console.WriteLine();
+            Console.WriteLine("DemoGetEstimate Calling GetEstimateNotDoneImportant - for IMPORTANT items");
+            estimate = channel.GetEstimateNotDoneImportant(name);
+            Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the NOT DONE IMPORTANT items in {name}");
+            Console.WriteLine($"so it will be done at {estimate.CompletedAt.Date.ToString("yyyy-MM-dd HH:mm")}");
+            ViewWebInstructions($"/getnotdone/{name}/estimate/important");
+
+
+
+        }
+
+        static void DemoGetToDoPriority(IToDoService channel, string name)
+        {
+            Console.WriteLine();
+            Console.WriteLine("DemoGetToDoPriority Calling GetToDoPriority - for all the items");
+            var aToDo = channel.GetToDoPriority(name);
+            ViewToDoItems(aToDo, "GetToDoPriority", name);
+            ViewWebInstructions($"/todo/{name}/priority");
+
+            Console.WriteLine();
+            Console.WriteLine("DemoGetToDoPriority Calling GetToDoPriorityImportant - for IMPORTANT items");
+            aToDo = channel.GetToDoPriorityImportant(name);
+            ViewToDoItems(aToDo, "GetToDoPriorityImportant", name);
+            ViewWebInstructions($"/todo/{name}/priority/important");
+
+
+
+        }
+
 
         // Test the GetDone WCF method
         static void DemoGetDone(IToDoService channel, string name)
@@ -221,7 +540,7 @@ namespace ToDoConsole
 
 
             // Here we do the call to actually create the ToDo-item using the WCF CreateToDO method
-            if (channel.CreateToDo(name, aNewToDoItem))
+            if (channel.CreateToDo(name, aNewToDoItem) != null)
             {
                 // This is the success message. It should be successful.
                 Console.WriteLine($"Vi lyckades lägga till ett todo item med namn {aNewToDoItem.Name}");
@@ -236,7 +555,7 @@ namespace ToDoConsole
             // To demonstrate, we try to create another ToDO-item, but because the CreateToDO method
             // will refuse to add Items if the name parameter (Chaplin in this case) is not the same
             // as the aNewToDoItem.Name (CHarlie in this case)
-            if (channel.CreateToDo(name+"other", aNewToDoItem))
+            if (channel.CreateToDo(name+"other", aNewToDoItem) != null)
             {
                 Console.WriteLine($"Vi lyckades lägga till ett todo item med namn {aNewToDoItem.Name}");
             }
@@ -297,14 +616,14 @@ namespace ToDoConsole
             Console.WriteLine($"Item with {lastId} deleted");
         }
 
-        // Testing the RevealALlMySecrets WCF method
-        static void DemoRevealAllMySecrets(IToDoService channel)
-        {
-            Console.WriteLine("Calling RevealAllMySecrets via HTTP GET: ");
-            var returnedString = channel.RevealAllMySecrets("wrong_password");
-            Console.WriteLine($"   Output: {returnedString}");
-            Console.WriteLine();
-        }
+        //// Testing the RevealALlMySecrets WCF method
+        //static void DemoRevealAllMySecrets(IToDoService channel)
+        //{
+        //    Console.WriteLine("Calling RevealAllMySecrets via HTTP GET: ");
+        //    var returnedString = channel.RevealAllMySecrets("wrong_password");
+        //    Console.WriteLine($"   Output: {returnedString}");
+        //    Console.WriteLine();
+        //}
 
         static void DeleteToDoByName(IToDoService channel, string name)
         {
@@ -316,6 +635,42 @@ namespace ToDoConsole
 
 
         }
+
+
+        // Test the EditToDo WCF method
+        static void DemoEditToDo(IToDoService channel,
+                                 string id,
+                                 string description,
+                                 string name,
+                                 string deadLine,
+                                 string estimationTime,
+                                 string finnished)
+        {
+
+            Console.WriteLine("\n\nCalling EditToDo via HTTP PUT: ");
+
+            bool status = false;
+            status = channel.EditToDo(id, description, name, deadLine, estimationTime, finnished);
+
+            if (status != true)
+            {
+                Console.WriteLine("Det gick inte att köra EditToDo");
+            }
+            else
+            {
+                Console.WriteLine("Det gick BRA att köra EditToDo");
+            }
+
+            if (id == "") { id = "%20"; } else { id = Uri.EscapeDataString(id); }
+            if (description == "") { description = "%20"; } else { description = Uri.EscapeDataString(description); }
+            if (name == "") { name = "%20"; } else { name = Uri.EscapeDataString(name); }
+            if (deadLine == "") { deadLine = "%20"; } else { deadLine = Uri.EscapeDataString(deadLine); }
+            if (estimationTime == "") { estimationTime = "%20"; } else { estimationTime = Uri.EscapeDataString(estimationTime); }
+            if (finnished == "") { finnished = "%20"; } else { finnished = Uri.EscapeDataString(finnished); }
+            // Display how to access them via uri
+            ViewWebInstructions($"/EditToDo/{id}/{description}/{name}/{deadLine}/{estimationTime}/{finnished}");
+
+        } // EditToDo WCF method slutar här
 
 
         // Shows instructions to the user of our console application that the information

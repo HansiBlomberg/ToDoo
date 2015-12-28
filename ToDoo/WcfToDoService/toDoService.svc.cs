@@ -7,10 +7,12 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using System.Xml;
+using System.Configuration;
+using System.Data;
 using ToDoBase;
 using ToDoDAL;
-using System.Web.Script.Serialization;
-
+using System.Web.Configuration;
+//using System.Web.Script.Serialization;
 
 namespace WcfToDoService
 {
@@ -47,8 +49,11 @@ namespace WcfToDoService
         // will be used by our methods. 
         public ToDoService()
         {
-            
-             ourDataAccessLayer = new DAL(getConnectionStringFromXML(configurationFileName));
+
+            string connectionString = getConnectionStringFromWebConfig();
+            if (connectionString == null)
+                connectionString = getConnectionStringFromXML(configurationFileName);
+             ourDataAccessLayer = new DAL(connectionString);
             
         }
 
@@ -68,16 +73,34 @@ namespace WcfToDoService
 
         }
 
+
+        private static string getConnectionStringFromWebConfig()
+        {
+
+            try
+            {
+                return ConfigurationManager.ConnectionStrings["ToDooConnection"].ConnectionString;
+            }
+
+            catch
+            {
+                return null;
+            }
+            
+            
+        }
+        
+        
         // This is just for play and debug
         // give the correct password and receive the connection string
-        public string RevealAllMySecrets(string password)
-        {
-            if (SecurePasswordHasher.Verify(password, "$MYHASH$V1$10000$lMUQ80G3AJNALrr0PHROwncegDhn8zIWgHdLweAJO7p92ieA"))
-            {
-                return getConnectionStringFromXML(configurationFileName);
-            }
-            else return "No way!";
-        }
+        //public string RevealAllMySecrets(string password)
+        //{
+        //    if (SecurePasswordHasher.Verify(password, "$MYHASH$V1$10000$lMUQ80G3AJNALrr0PHROwncegDhn8zIWgHdLweAJO7p92ieA"))
+        //    {
+        //        return getConnectionStringFromXML(configurationFileName);
+        //    }
+        //    else return "No way!";
+        //}
         
 
         public List<ToDo> GetToDo(string name)
@@ -88,14 +111,68 @@ namespace WcfToDoService
                       
         }
 
+        public List<ToDo> GetToDoImportant(string name)
+        {
+
+            return GetToDo(name).Where(t => t.Description.Last() == '!').ToList();
+
+        }
+
+        public List<ToDo> GetToDoPriority(string name)
+        {
+
+            return GetToDo(name).OrderBy(t => t.DeadLine).ToList();
+
+        }
+
+        public List<ToDo> GetToDoPriorityImportant(string name)
+        {
+
+            return GetToDoImportant(name).OrderBy(t => t.DeadLine).ToList();
+
+        }
+
+
+        public int CountToDoImportant(string name)
+        {
+            return GetToDoImportant(name).Count();
+        }
+
+        public int CountDoneImportant(string name)
+        {
+            return GetDoneImportant(name).Count();
+        }
+
+        public int CountNotDoneImportant(string name)
+        {
+            return GetNotDoneImportant(name).Count();
+        }
+
         public List<ToDo> GetDone(string name)
         {
 
             return ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Finnished).ToList();            
         }
 
+        public List<ToDo> GetNotDone(string name)
+        {
 
-        public bool CreateToDo(string name, ToDo todo)
+            return ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Finnished == false).ToList();
+        }
+
+        public List<ToDo> GetDoneImportant(string name)
+        {
+
+            return GetDone(name).Where(t => t.Description.Last() == '!').ToList();
+        }
+        public List<ToDo> GetNotDoneImportant(string name)
+        {
+
+            return GetNotDone(name).Where(t => t.Description.Last() == '!').ToList();
+        }
+
+
+        public int? CreateToDo(string name, ToDo todo)
         {
 
             // We are about to create a ToDo-item in the database
@@ -103,7 +180,7 @@ namespace WcfToDoService
             // Such as checking if name == ToDo.Name?
                                     
             // Because we really really want the todo to have the same Name property as specified by the name parameter to this method.
-            if (name != todo.Name) return false;
+            if (name != todo.Name) return null;
 
             // We dont care what CreatedDate came with the todo parameter. We will use the current Date and Time!
             todo.CreatedDate = DateTime.Now;
@@ -115,7 +192,7 @@ namespace WcfToDoService
             var tempToDoList = ourDataAccessLayer.GetToDoListByName(todo.Name); // Get the existing todo list
             foreach(var t in tempToDoList)
             {
-                if (t == todo) return false; // If there is an existing todo list with same information, dont insert the new one :-)
+                if (t == todo) return null; // If there is an existing todo list with same information, dont insert the new one :-)
             }
 
             ourDataAccessLayer.AddToDo(todo);  // (try to...) Save the ToDo-item to the database!!
@@ -123,10 +200,10 @@ namespace WcfToDoService
             tempToDoList = ourDataAccessLayer.GetToDoListByName(todo.Name); // Get the existing todo list again!
             foreach (var t in tempToDoList)
             {
-                if (t == todo) return true; // This time, we DO want to find our todo list in the database :-)
+                if (t == todo) return t.Id; // This time, we DO want to find our todo list in the database, if so return its Id
             }
 
-            return false;  // Something went wrong, the todo list did never make it to the database
+            return null;  // Something went wrong, the todo list did never make it to the database
         }
 
 
@@ -169,7 +246,7 @@ namespace WcfToDoService
             bool didEverythingGetAdded = true;
             foreach (var toDo in toDoList)
             {
-                if (!CreateToDo(name, toDo)) didEverythingGetAdded = false;
+                if (CreateToDo(name, toDo) == null) didEverythingGetAdded = false;
             }
 
             return didEverythingGetAdded;
@@ -199,7 +276,7 @@ namespace WcfToDoService
         // Remove todo with the given ID
         public bool DeleteToDoByID(string _name, string _id)
         {
-            if ((_name == "" || _name == null) && (_id == "" || _id == null)) return false;
+            if (_name == "" || _name == null || _id == "" || _id == null) return false;
 
             int id;
             bool result = int.TryParse(_id, out id);
@@ -223,7 +300,7 @@ namespace WcfToDoService
         // Set todo with the given ID to Finished (done).
         public bool UpdateToDoByID(string name, string id, ToDo todo)
         {
-            if ((name == "" || name == null) && (id == "" || id == null)) return false;
+            if (name == "" || name == null || id == "" || id == null) return false;
 
             try
             {
@@ -236,7 +313,166 @@ namespace WcfToDoService
             catch { return false; }
         }
 
+        public Estimate GetEstimate(string name)
+        {
+            var totalTime = GetToDo(name).Sum(t => t.EstimationTime);
+            return new Estimate { TotalTime = totalTime, CompletedAt = DateTime.Now.AddMinutes(totalTime)};
 
+        }
+
+        public Estimate GetEstimateNotDone(string name)
+        {
+            var totalTime = GetNotDone(name).Sum(t => t.EstimationTime);
+            return new Estimate { TotalTime = totalTime, CompletedAt = DateTime.Now.AddMinutes(totalTime) };
+
+        }
+
+        public Estimate GetEstimateImportant(string name)
+        {
+            var totalTime = GetToDoImportant(name).Sum(t => t.EstimationTime);
+            return new Estimate { TotalTime = totalTime, CompletedAt = DateTime.Now.AddMinutes(totalTime) };
+        }
+
+        public Estimate GetEstimateNotDoneImportant(string name)
+        {
+            var totalTime = GetNotDoneImportant(name).Sum(t => t.EstimationTime);
+            return new Estimate { TotalTime = totalTime, CompletedAt = DateTime.Now.AddMinutes(totalTime) };
+        }
+
+        public bool MarkToDoDone(string name, string id)
+        {
+            int _id;
+            if ( int.TryParse(id, out _id))
+            {
+                var aToDo = ourDataAccessLayer.GetToDoById(_id);
+                if (aToDo == null) return false;
+                if (aToDo.Name == null) return false;
+                if (aToDo.Name == name)
+                {
+                    aToDo.Finnished = true;
+                    ourDataAccessLayer.UpdateToDo(aToDo);
+                    aToDo = ourDataAccessLayer.GetToDoById(_id);
+                    return aToDo.Finnished;
+                }
+            }
+            return false;
+        }
+
+        public bool? IsToDoDone(string name, string id)
+        {
+            int _id;
+            if( int.TryParse(id, out _id))
+            {
+                var aToDo = ourDataAccessLayer.GetToDoById(_id);
+                if (aToDo == null) return null;
+                if (aToDo.Name == null) return null;
+                if (aToDo.Name == name)
+                    return aToDo.Finnished;
+            }
+            return null;
+        }
+
+        public bool MarkToDoNotDone(string name, string id)
+        {
+            int _id;
+            if (int.TryParse(id, out _id))
+            {
+                var aToDo = ourDataAccessLayer.GetToDoById(_id);
+                if (aToDo == null) return false;
+                if (aToDo.Name == null) return false;
+                if (aToDo.Name == name)
+                {
+                    aToDo.Finnished = false;
+                    ourDataAccessLayer.UpdateToDo(aToDo);
+                    aToDo = ourDataAccessLayer.GetToDoById(_id);
+                    return !aToDo.Finnished;
+                }
+            }
+            return false;
+        }
+
+
+        public bool? IsToDoNotDone(string name, string id)
+        {
+
+            var isItDone = IsToDoDone(name, id);
+
+            if (isItDone != null)
+                return !isItDone;
+            else return null;
+        }
+
+        public bool EditToDo(string id,
+                               string description,
+                               string name,
+                               string deadLine,
+                               string estimationTime,
+                               string finnished)
+        {   
+            int _id;
+            ToDo toDoOld, toDoNew;
+                        
+            if (Int32.TryParse(id, out _id))
+            {
+                toDoOld = ourDataAccessLayer.GetToDoById(_id);
+                toDoNew = toDoOld;
+
+                //Console.WriteLine("Detta beskrivning: -" + ourDataAccessLayer.GetToDoById(_id).Description + "-");
+                //Console.WriteLine("Detta namn: -" + ourDataAccessLayer.GetToDoById(_id).Name + "-");
+
+                if (description != "%20" && description != " ")
+                {
+                    toDoNew.Description = description;
+                }
+
+                if (name != "%20" && name != " ")
+                {
+                    toDoNew.Name = name;
+                }
+
+                DateTime _deadLine;
+                if (DateTime.TryParse(deadLine, out _deadLine))
+                {
+                    toDoNew.DeadLine = _deadLine;
+                }
+
+                int _estimationTime;
+                if (Int32.TryParse(estimationTime, out _estimationTime))
+                {
+                    toDoNew.EstimationTime = _estimationTime;
+                }
+
+                if (finnished !="" && finnished != "%20")
+                {
+                    finnished = finnished.ToLower();
+                    if (finnished == "true")
+                    {
+                        toDoNew.Finnished = true;
+                    }
+                    else if (finnished == "false")
+                    {
+                        toDoNew.Finnished = false;
+                    }
+                }
+
+                ourDataAccessLayer.UpdateToDo(toDoNew);
+                if (toDoNew == ourDataAccessLayer.GetToDoById(_id))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+
+            else
+            {
+                return false;
+            }
+            
+        } // EditToDo slutar här
 
 
         // This is just a sample method, that shows how to return a "composite" type
@@ -256,6 +492,3 @@ namespace WcfToDoService
         }
     }
 }
-
-
-
