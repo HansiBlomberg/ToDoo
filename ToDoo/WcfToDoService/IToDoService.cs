@@ -89,7 +89,7 @@ namespace WcfToDoService
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
                     RequestFormat = WebMessageFormat.Json,
-                    Method = "PUT", UriTemplate = "todo/{name}/{id}/notdone/")]
+                    Method = "PUT", UriTemplate = "todo/{name}/{id}/notdone")]
         bool MarkToDoNotDone(string name, string id);
 
 
