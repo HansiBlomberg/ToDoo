@@ -202,6 +202,8 @@ namespace WcfToDoService
         [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "getnotdone/{name}/estimate/important")]
         Estimate GetEstimateNotDoneImportant(string name);
 
+
+
         //Som utvecklare av frontend vill 
         //jag kunna redigera punkter som redan
         //finns i min todo
@@ -209,7 +211,7 @@ namespace WcfToDoService
         /*[WebInvoke(ResponseFormat = WebMessageFormat.Json,
                    RequestFormat = WebMessageFormat.Json,
                    Method = "PUT", UriTemplate = "EditToDo/{id}/{description}")]*/
-        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "EditToDo/{id=%20}/{description=%20}/{name=%20}/{deadLine=%20}/{estimationTime=%20}/{finnished=%20}")]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "EditToDo/{id=__default__}/{description=__default__}/{name=__default__}/{deadLine=__default__}/{estimationTime=__default__}/{finnished=__default__}")]
         bool EditToDo(string id,
                         string description,
                         string name,
@@ -217,11 +219,12 @@ namespace WcfToDoService
                         string estimationTime,
                         string finnished);
 
+
+
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
                    RequestFormat = WebMessageFormat.Json,
-                   Method = "PUT", UriTemplate = "todo/{name}/{id}/description/{description}")]
-        
+                   Method = "PUT", UriTemplate = "todo/{name}/{id}/description/{description}")]        
         bool ChangeToDoDescription(string id,
                         string description,
                         string name);

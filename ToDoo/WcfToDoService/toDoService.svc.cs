@@ -384,7 +384,7 @@ namespace WcfToDoService
                                     
         }
 
-        
+
 
 
 
@@ -397,70 +397,93 @@ namespace WcfToDoService
                                string deadLine,
                                string estimationTime,
                                string finnished)
-        {   
+        {
             int _id;
             ToDo toDoOld, toDoNew;
-                        
+
+
             if (Int32.TryParse(id, out _id))
             {
                 toDoOld = ourDataAccessLayer.GetToDoById(_id);
-                toDoNew = toDoOld;
 
-                //Console.WriteLine("Detta beskrivning: -" + ourDataAccessLayer.GetToDoById(_id).Description + "-");
-                //Console.WriteLine("Detta namn: -" + ourDataAccessLayer.GetToDoById(_id).Name + "-");
-
-                if (description != "%20" && description != " ")
+                if (toDoOld != null)
                 {
-                    toDoNew.Description = description;
-                }
+                    toDoNew = toDoOld;
+                    if (description != "__default__")
+                    {
+                        toDoNew.Description = description;
+                    }
+                    else
+                    {
+                        toDoNew.Description = toDoOld.Description;
+                    }
 
-                if (name != "%20" && name != " ")
-                {
-                    toDoNew.Name = name;
-                }
+                    if (name != "__default__")
+                    {
+                        toDoNew.Name = name;
+                    }
+                    else
+                    {
+                        toDoNew.Name = toDoOld.Name;
+                    }
 
-                DateTime _deadLine;
-                if (DateTime.TryParse(deadLine, out _deadLine))
-                {
-                    toDoNew.DeadLine = _deadLine;
-                }
+                    DateTime _deadLine;
+                    if (DateTime.TryParse(deadLine, out _deadLine))
+                    {
+                        toDoNew.DeadLine = _deadLine;
+                    }
+                    else
+                    {
+                        toDoNew.DeadLine = toDoOld.DeadLine;
+                    }
 
-                int _estimationTime;
-                if (Int32.TryParse(estimationTime, out _estimationTime))
-                {
-                    toDoNew.EstimationTime = _estimationTime;
-                }
+                    int _estimationTime;
+                    if (Int32.TryParse(estimationTime, out _estimationTime))
+                    {
+                        toDoNew.EstimationTime = _estimationTime;
+                    }
+                    else
+                    {
+                        toDoNew.EstimationTime = toDoOld.EstimationTime;
+                    }
 
-                if (finnished !="" && finnished != "%20")
-                {
                     finnished = finnished.ToLower();
-                    if (finnished == "true")
+                    if (finnished == "true" || finnished == "false")
                     {
-                        toDoNew.Finnished = true;
+                        if (finnished == "true")
+                        {
+                            toDoNew.Finnished = true;
+                        }
+                        else
+                        {
+                            toDoNew.Finnished = false;
+                        }
                     }
-                    else if (finnished == "false")
+                    else
                     {
-                        toDoNew.Finnished = false;
+                        toDoNew.Finnished = toDoOld.Finnished;
                     }
-                }
 
-                ourDataAccessLayer.UpdateToDo(toDoNew);
-                if (toDoNew == ourDataAccessLayer.GetToDoById(_id))
-                {
-                    return true;
+
+                    ourDataAccessLayer.UpdateToDo(toDoNew);
+                    if (toDoNew == ourDataAccessLayer.GetToDoById(_id)) // Kontrollera om det blivit förändringar
+                    {
+                        return true; // Svara true om det blivit förändringar
+                    }
+                    else
+                    {
+                        return false; // Svara false om det INTE blivit förändringar
+                    }
                 }
                 else
                 {
                     return false;
                 }
-
             }
-
             else
             {
                 return false;
             }
-            
         } // EditToDo slutar här
 
 

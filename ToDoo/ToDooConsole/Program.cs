@@ -78,8 +78,8 @@ namespace ToDoConsole
 
 
 
-                    // Här testar man DemoEditToDo
-                    Console.WriteLine("Mata in ett ID: ");
+                    // Här testar man DemoEditToDo (Metod 1)
+                    /*Console.WriteLine("Mata in ett ID: ");
                     string myId = Console.ReadLine();
                     Console.WriteLine("Mata in en uppgift: ");
                     string desc = Console.ReadLine();
@@ -91,7 +91,11 @@ namespace ToDoConsole
                     string estimationTime = Console.ReadLine();
                     Console.WriteLine("Mata in ett finnished: ");
                     string finnished = Console.ReadLine();
-                    DemoEditToDo(channel, myId, desc, name, deadLine, estimationTime, finnished);
+                    DemoEditToDo(channel, myId, desc, name, deadLine, estimationTime, finnished);*/
+
+                    // Här testar man DemoEditToDo (Metod 2)
+                    DemoEditToDo(channel, "3", "Plocka jordgubbar", "P Chow", "2015-12-29", "100", "true");
+                    //DemoEditToDo(channel, "3", "", "Hamid X", "", "", "true");
 
 
 
@@ -637,7 +641,7 @@ namespace ToDoConsole
         }
 
 
-        // Test the EditToDo WCF method
+        // Test the DemoEditToDo WCF method
         static void DemoEditToDo(IToDoService channel,
                                  string id,
                                  string description,
@@ -661,16 +665,18 @@ namespace ToDoConsole
                 Console.WriteLine("Det gick BRA att köra EditToDo");
             }
 
-            if (id == "") { id = "%20"; } else { id = Uri.EscapeDataString(id); }
-            if (description == "") { description = "%20"; } else { description = Uri.EscapeDataString(description); }
-            if (name == "") { name = "%20"; } else { name = Uri.EscapeDataString(name); }
-            if (deadLine == "") { deadLine = "%20"; } else { deadLine = Uri.EscapeDataString(deadLine); }
-            if (estimationTime == "") { estimationTime = "%20"; } else { estimationTime = Uri.EscapeDataString(estimationTime); }
-            if (finnished == "") { finnished = "%20"; } else { finnished = Uri.EscapeDataString(finnished); }
+
+            if (id == "") { id = "__default__"; } else { id = Uri.EscapeDataString(id); }
+            if (description == "") { description = "__default__"; } else { description = Uri.EscapeDataString(description); }
+            if (name == "") { name = "__default__"; } else { name = Uri.EscapeDataString(name); }
+            if (deadLine == "") { deadLine = "__default__"; } else { deadLine = Uri.EscapeDataString(deadLine); }
+            if (estimationTime == "") { estimationTime = "__default__"; } else { estimationTime = Uri.EscapeDataString(estimationTime); }
+            if (finnished == "") { finnished = "__default__"; } else { finnished = Uri.EscapeDataString(finnished); }
+
             // Display how to access them via uri
             ViewWebInstructions($"/EditToDo/{id}/{description}/{name}/{deadLine}/{estimationTime}/{finnished}");
 
-        } // EditToDo WCF method slutar här
+        } // DemoEditToDo WCF method slutar här
 
 
         // Shows instructions to the user of our console application that the information
