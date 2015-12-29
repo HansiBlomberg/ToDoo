@@ -42,7 +42,8 @@ namespace WcfToDoService
             {
                 //These headers are handling the "pre-flight" OPTIONS call sent by the browser
                 HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-                HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
+                HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept");
+                HttpContext.Current.Response.AddHeader("Access-Control-Request-Method", "POST,GET,PUT,DELETE,OPTIONS");
                 HttpContext.Current.Response.AddHeader("Access-Control-Max-Age", "1728000");
                 HttpContext.Current.Response.AddHeader("Content-Type", "application/json");
                 HttpContext.Current.Response.End();
