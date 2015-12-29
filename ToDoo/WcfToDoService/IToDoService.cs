@@ -68,9 +68,22 @@ namespace WcfToDoService
         //[WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "RevealAllMySecrets/{password}")]
         //string RevealAllMySecrets(string password);
 
+        //  Bare
+        //  Both Request and Reponse are not Wrapped
+        //  Wrapped
+        //  Both requests and responses are wrapped.
+        //  WrappedRequest
+        //  Requests are wrapped, responses are not wrapped.
+        //  WrappedResponse
+        //  Responses are wrapped, requests are not wrapped.
+
+
+
+
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
                     RequestFormat = WebMessageFormat.Json,
+                    BodyStyle = WebMessageBodyStyle.Wrapped,
                     Method = "POST", UriTemplate = "todo/{name}/new")]
         int CreateToDo(string name, ToDo todo);
 
