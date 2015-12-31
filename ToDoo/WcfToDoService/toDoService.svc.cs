@@ -206,6 +206,43 @@ namespace WcfToDoService
         }
 
 
+        public ToDoTest CreateToDoTest(string name, ToDo todo)
+        {
+
+            // We are about to create a ToDo-item in the database
+            // Maybe some validation is in order?
+            // Such as checking if name == ToDo.Name?
+
+            // Because we really really want the todo to have the same Name property as specified by the name parameter to this method.
+            if (name != todo.Name) return null;
+
+            // We dont care what CreatedDate came with the todo parameter. We will use the current Date and Time!
+            todo.CreatedDate = DateTime.Now;
+
+
+            // ourDataAccessLayer is our DAL
+            // This is where the ToDo-item is sent to the database!
+
+            var tempToDoList = ourDataAccessLayer.GetToDoListByName(todo.Name); // Get the existing todo list
+            foreach (var t in tempToDoList)
+            {
+                if (t == todo) return null; // If there is an existing todo list with same information, dont insert the new one :-)
+            }
+
+            ourDataAccessLayer.AddToDo(todo);  // (try to...) Save the ToDo-item to the database!!
+
+            tempToDoList = ourDataAccessLayer.GetToDoListByName(todo.Name); // Get the existing todo list again!
+            foreach (var t in tempToDoList)
+            {
+                if (t == todo) return new ToDoTest(t); // This time, we DO want to find our todo list in the database, if so return its Id
+            }
+
+            return null;  // Something went wrong, the todo list did never make it to the database
+        }
+
+
+
+
         // This method will accept a comma separated list of todo descriptions and create
         // multiple todo items in the database.
         // We will use the same deadline and estimationtime for every item.

@@ -87,6 +87,16 @@ namespace WcfToDoService
                     Method = "POST", UriTemplate = "todo/{name}/new")]
         int CreateToDo(string name, ToDo todo);
 
+
+        [OperationContract]
+        [WebInvoke(ResponseFormat = WebMessageFormat.Json,
+                    RequestFormat = WebMessageFormat.Json,
+                    BodyStyle = WebMessageBodyStyle.Wrapped,
+                    Method = "POST", UriTemplate = "todo/{name}/newtest")]
+        ToDoTest CreateToDoTest(string name, ToDo todo);
+
+
+
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
                     RequestFormat = WebMessageFormat.Json,
@@ -248,6 +258,51 @@ namespace WcfToDoService
         
     }
 
+    [DataContract]
+    public class ToDoTest 
+    {
+        
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public bool Finnished { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime DeadLine { get; set; }
+        public int EstimationTime { get; set; }
+
+
+        public ToDoTest(int id, string name, string description, bool finnished, DateTime createdDate, DateTime deadLine, int estimationTime)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            Finnished = finnished;
+            CreatedDate = createdDate;
+            DeadLine = deadLine;
+            EstimationTime = estimationTime;
+
+        }
+
+        public ToDoTest(ToDo todo)
+        {
+            Id = todo.Id;
+            Name = todo.Name;
+            Description = todo.Description;
+            Finnished = todo.Finnished;
+            CreatedDate = todo.CreatedDate;
+            DeadLine = todo.DeadLine;
+            EstimationTime = todo.EstimationTime;
+
+
+        }
+        
+
+    }
+
+
+
+
+
     // The class below is just an example from the tutorial, not used by our application.
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]
@@ -270,4 +325,9 @@ namespace WcfToDoService
             set { stringValue = value; }
         }
     }
+
+
+
+
+
 }
