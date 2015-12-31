@@ -110,6 +110,7 @@ namespace WcfToDoService
                       
         }
 
+       
         public List<ToDo> GetToDoImportant(string name)
         {
 
@@ -171,7 +172,7 @@ namespace WcfToDoService
         }
 
 
-        public int CreateToDo(string name, ToDo todo)
+        public ToDo CreateToDo(string name, ToDo todo)
         {
 
             // We are about to create a ToDo-item in the database
@@ -179,7 +180,7 @@ namespace WcfToDoService
             // Such as checking if name == ToDo.Name?
                                     
             // Because we really really want the todo to have the same Name property as specified by the name parameter to this method.
-            if (name != todo.Name) return -1;
+            if (name != todo.Name) return null;
 
             // We dont care what CreatedDate came with the todo parameter. We will use the current Date and Time!
             todo.CreatedDate = DateTime.Now;
@@ -191,41 +192,6 @@ namespace WcfToDoService
             var tempToDoList = ourDataAccessLayer.GetToDoListByName(todo.Name); // Get the existing todo list
             foreach(var t in tempToDoList)
             {
-                if (t == todo) return -1; // If there is an existing todo list with same information, dont insert the new one :-)
-            }
-
-            ourDataAccessLayer.AddToDo(todo);  // (try to...) Save the ToDo-item to the database!!
-
-            tempToDoList = ourDataAccessLayer.GetToDoListByName(todo.Name); // Get the existing todo list again!
-            foreach (var t in tempToDoList)
-            {
-                if (t == todo) return t.Id; // This time, we DO want to find our todo list in the database, if so return its Id
-            }
-
-            return -1;  // Something went wrong, the todo list did never make it to the database
-        }
-
-
-        public ToDoTest CreateToDoTest(string name, ToDo todo)
-        {
-
-            // We are about to create a ToDo-item in the database
-            // Maybe some validation is in order?
-            // Such as checking if name == ToDo.Name?
-
-            // Because we really really want the todo to have the same Name property as specified by the name parameter to this method.
-            if (name != todo.Name) return null;
-
-            // We dont care what CreatedDate came with the todo parameter. We will use the current Date and Time!
-            todo.CreatedDate = DateTime.Now;
-
-
-            // ourDataAccessLayer is our DAL
-            // This is where the ToDo-item is sent to the database!
-
-            var tempToDoList = ourDataAccessLayer.GetToDoListByName(todo.Name); // Get the existing todo list
-            foreach (var t in tempToDoList)
-            {
                 if (t == todo) return null; // If there is an existing todo list with same information, dont insert the new one :-)
             }
 
@@ -234,13 +200,14 @@ namespace WcfToDoService
             tempToDoList = ourDataAccessLayer.GetToDoListByName(todo.Name); // Get the existing todo list again!
             foreach (var t in tempToDoList)
             {
-                if (t == todo) return new ToDoTest(t); // This time, we DO want to find our todo list in the database, if so return its Id
+                if (t == todo) return t; // This time, we DO want to find our todo list in the database, if so return its Id
             }
 
             return null;  // Something went wrong, the todo list did never make it to the database
         }
 
 
+        
 
 
         // This method will accept a comma separated list of todo descriptions and create
@@ -282,7 +249,7 @@ namespace WcfToDoService
             bool didEverythingGetAdded = true;
             foreach (var toDo in toDoList)
             {
-                if (CreateToDo(name, toDo) == -1) didEverythingGetAdded = false;
+                if (CreateToDo(name, toDo) == null) didEverythingGetAdded = false;
             }
 
             return didEverythingGetAdded;

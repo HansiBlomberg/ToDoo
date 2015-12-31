@@ -544,7 +544,7 @@ namespace ToDoConsole
 
 
             // Here we do the call to actually create the ToDo-item using the WCF CreateToDO method
-            if (channel.CreateToDo(name, aNewToDoItem) != -1)
+            if (channel.CreateToDo(name, aNewToDoItem) != null)
             {
                 // This is the success message. It should be successful.
                 Console.WriteLine($"Vi lyckades lägga till ett todo item med namn {aNewToDoItem.Name}");
@@ -559,7 +559,7 @@ namespace ToDoConsole
             // To demonstrate, we try to create another ToDO-item, but because the CreateToDO method
             // will refuse to add Items if the name parameter (Chaplin in this case) is not the same
             // as the aNewToDoItem.Name (CHarlie in this case)
-            if (channel.CreateToDo(name+"other", aNewToDoItem) != -1)
+            if (channel.CreateToDo(name+"other", aNewToDoItem) != null)
             {
                 Console.WriteLine($"Vi lyckades lägga till ett todo item med namn {aNewToDoItem.Name}");
             }
