@@ -92,8 +92,9 @@ namespace WcfToDoService
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
                     RequestFormat = WebMessageFormat.Json,
+                    BodyStyle = WebMessageBodyStyle.Bare,
                     Method = "PUT", UriTemplate = "todo/{name}/{id}/done")]
-        bool MarkToDoDone(string name, string id);
+        ToDo MarkToDoDone(string name, string id);
 
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json,
@@ -104,8 +105,9 @@ namespace WcfToDoService
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
                     RequestFormat = WebMessageFormat.Json,
+                    BodyStyle = WebMessageBodyStyle.Bare,
                     Method = "PUT", UriTemplate = "todo/{name}/{id}/notdone")]
-        bool MarkToDoNotDone(string name, string id);
+        ToDo MarkToDoNotDone(string name, string id);
 
 
         [OperationContract]
@@ -226,8 +228,9 @@ namespace WcfToDoService
         [OperationContract]
         [WebInvoke(ResponseFormat = WebMessageFormat.Json,
                    RequestFormat = WebMessageFormat.Json,
+                    BodyStyle = WebMessageBodyStyle.Bare,
                    Method = "PUT", UriTemplate = "todo/{name}/{id}/description/{description}")]        
-        bool ChangeToDoDescription(string id,
+        ToDo ChangeToDoDescription(string id,
                         string description,
                         string name);
 

@@ -327,23 +327,23 @@ namespace WcfToDoService
         }
 
         
-        public bool MarkToDoDone(string name, string id)
+        public ToDo MarkToDoDone(string name, string id)
         {
             int _id;
             if ( int.TryParse(id, out _id))
             {
                 var aToDo = ourDataAccessLayer.GetToDoById(_id);
-                if (aToDo == null) return false;
-                if (aToDo.Name == null) return false;
+                if (aToDo == null) return null;
+                if (aToDo.Name == null) return null;
                 if (aToDo.Name == name)
                 {
                     aToDo.Finnished = true;
                     ourDataAccessLayer.UpdateToDo(aToDo);
                     aToDo = ourDataAccessLayer.GetToDoById(_id);
-                    return aToDo.Finnished;
+                    return aToDo;
                 }
             }
-            return false;
+            return null;
         }
 
         public bool IsToDoDone(string name, string id)
@@ -361,23 +361,23 @@ namespace WcfToDoService
             
         }
 
-        public bool MarkToDoNotDone(string name, string id)
+        public ToDo MarkToDoNotDone(string name, string id)
         {
             int _id;
             if (int.TryParse(id, out _id))
             {
                 var aToDo = ourDataAccessLayer.GetToDoById(_id);
-                if (aToDo == null) return false;
-                if (aToDo.Name == null) return false;
+                if (aToDo == null) return null;
+                if (aToDo.Name == null) return null;
                 if (aToDo.Name == name)
                 {
                     aToDo.Finnished = false;
                     ourDataAccessLayer.UpdateToDo(aToDo);
                     aToDo = ourDataAccessLayer.GetToDoById(_id);
-                    return !aToDo.Finnished;
+                    return aToDo;
                 }
             }
-            return false;
+            return null;
         }
 
 
@@ -492,24 +492,22 @@ namespace WcfToDoService
 
 
 
-        public bool ChangeToDoDescription(string id,
+        public ToDo ChangeToDoDescription(string id,
                         string description,
                         string name)
         {
 
             int _id;
-            if (!int.TryParse(id, out _id)) return false;
+            if (!int.TryParse(id, out _id)) return null;
 
             var aToDo = ourDataAccessLayer.GetToDoById(_id);
-            if (aToDo == null) return false;
-            if (aToDo.Name != name) return false;
+            if (aToDo == null) return null;
+            if (aToDo.Name != name) return null;
 
             aToDo.Description = description;
             ourDataAccessLayer.UpdateToDo(aToDo);
             aToDo = ourDataAccessLayer.GetToDoById(_id);
-            if (aToDo == null) return false;
-            if (aToDo.Description == description) return true;
-            return false;
+            return aToDo;
 
         }
 
