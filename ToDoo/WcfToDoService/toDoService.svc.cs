@@ -527,6 +527,40 @@ namespace WcfToDoService
             }
             return composite;
         }
+
+
+        public int GetNumberOfToDoos(string name)
+        {
+            if(name == null)
+            {
+                throw new ArgumentNullException("name");
+            }
+            // Get the number of ToDoos with a specific name
+            List<ToDo> toDoos = ourDataAccessLayer.GetToDoListByName(name);
+            return toDoos.Count;
+        }
+
+        public int GetNumberOfMarkedToDoos(string name)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException("name");
+            }
+            // Get the number of ToDoos with a specific name
+            List<ToDo> toDoos = ourDataAccessLayer.GetToDoListByName(name);
+            int _count = 0;
+
+            var markedTodoos = from todo in toDoos where todo.Finnished.Equals(true) select todo;
+            foreach (ToDo markedTodo in markedTodoos)
+            {
+                _count++;
+            }
+
+
+            return _count;
+        }
+
+
     }
 }
 

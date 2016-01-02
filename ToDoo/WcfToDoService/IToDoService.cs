@@ -235,6 +235,14 @@ namespace WcfToDoService
                         string name);
 
 
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "GetNumberOfToDoos/{name}")]
+        int GetNumberOfToDoos(string name);
+
+        [OperationContract]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "GetNumberOfMarkedToDoos/{name}")]
+        int GetNumberOfMarkedToDoos(string name);
+
 
 
     }
