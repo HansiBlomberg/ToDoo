@@ -75,27 +75,9 @@ namespace ToDoConsole
                     DemoDeleteToDo(channel, "Michele");
 
                     DemoSetAndCheckIfSomethingIsDone(channel, "MrDoer");
+                    
 
-
-
-                    // Här testar man DemoEditToDo (Metod 1)
-                    /*Console.WriteLine("Mata in ett ID: ");
-                    string myId = Console.ReadLine();
-                    Console.WriteLine("Mata in en uppgift: ");
-                    string desc = Console.ReadLine();
-                    Console.WriteLine("Mata in ett namn: ");
-                    string name = Console.ReadLine();
-                    Console.WriteLine("Mata in ett deadLine: ");
-                    string deadLine = Console.ReadLine();
-                    Console.WriteLine("Mata in ett estimationTime: ");
-                    string estimationTime = Console.ReadLine();
-                    Console.WriteLine("Mata in ett finnished: ");
-                    string finnished = Console.ReadLine();
-                    DemoEditToDo(channel, myId, desc, name, deadLine, estimationTime, finnished);*/
-
-                    // Här testar man DemoEditToDo (Metod 2)
-                    //DemoEditToDo(channel, "3", "Plocka jordgubbar", "P Chow", "2015-12-29", "100", "true");
-                    DemoEditToDo(channel, "3", "", "Hamid X", "", "", "false");
+                    DemoEditToDo(channel, "", "Hamid X", "", "", "false");
 
 
 
@@ -657,16 +639,34 @@ namespace ToDoConsole
 
         // Test the DemoEditToDo WCF method
         static void DemoEditToDo(IToDoService channel,
-                                 string id,
                                  string description,
                                  string name,
                                  string deadLine,
                                  string estimationTime,
                                  string finnished)
         {
+            // While testing, a lot of todo lists will be created.
+            // This will clean up the database
+            DeleteToDoByName(channel, "Mr EditToDo");
+
+            ToDo test = new ToDo()
+            {
+                Name = "Mr EditToDo",
+                Description = "Testa EditToDo",
+                CreatedDate = DateTime.Now,
+                Finnished = false,
+                DeadLine = DateTime.Now,
+                EstimationTime = 100
+            };
+            channel.CreateToDo("Mr EditToDo", test);
+
+            ToDo newToDo = channel.GetToDo("Mr EditToDo").Where(t => t.Description == "Testa EditToDo").ToList()[0];
+            string id = newToDo.Id.ToString();
+            Console.WriteLine("Mr EditToDo har ID: " + id);
 
             Console.WriteLine("\n\nCalling EditToDo via HTTP PUT: ");
-
+            
+                       
             bool status = false;
             status = channel.EditToDo(id, description, name, deadLine, estimationTime, finnished);
 
