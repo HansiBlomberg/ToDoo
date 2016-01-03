@@ -94,8 +94,8 @@ namespace ToDoConsole
                     DemoEditToDo(channel, myId, desc, name, deadLine, estimationTime, finnished);*/
 
                     // Här testar man DemoEditToDo (Metod 2)
-                    DemoEditToDo(channel, "3", "Plocka jordgubbar", "P Chow", "2015-12-29", "100", "true");
-                    //DemoEditToDo(channel, "3", "", "Hamid X", "", "", "true");
+                    //DemoEditToDo(channel, "3", "Plocka jordgubbar", "P Chow", "2015-12-29", "100", "true");
+                    DemoEditToDo(channel, "3", "", "Hamid X", "", "", "false");
 
 
 
