@@ -105,7 +105,7 @@ namespace WcfToDoService
         public List<ToDo> GetToDo(string name)
         {
             // Get the ToDo-list with the name name from the database via our data access layer (DAL)
-            return ourDataAccessLayer.GetToDoListByName(name);
+            return ourDataAccessLayer.GetToDoListByName(name).Where(t=>t.Name.ToLower() == name.ToLower()).ToList();
 
                       
         }
@@ -114,21 +114,21 @@ namespace WcfToDoService
         public List<ToDo> GetToDoImportant(string name)
         {
 
-            return GetToDo(name).Where(t => t.Description.Last() == '!').ToList();
+            return GetToDo(name).Where(t => t.Name.ToLower() == name.ToLower()).Where(t => t.Description.Last() == '!').ToList();
 
         }
 
         public List<ToDo> GetToDoPriority(string name)
         {
 
-            return GetToDo(name).OrderBy(t => t.DeadLine).ToList();
+            return GetToDo(name).Where(t => t.Name.ToLower() == name.ToLower()).OrderBy(t => t.DeadLine).ToList();
 
         }
 
         public List<ToDo> GetToDoPriorityImportant(string name)
         {
 
-            return GetToDoImportant(name).OrderBy(t => t.DeadLine).ToList();
+            return GetToDoImportant(name).Where(t => t.Name.ToLower() == name.ToLower()).OrderBy(t => t.DeadLine).ToList();
 
         }
 
@@ -151,24 +151,24 @@ namespace WcfToDoService
         public List<ToDo> GetDone(string name)
         {
 
-            return ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Finnished).ToList();            
+            return ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Name.ToLower() == name.ToLower()).Where(t => t.Finnished).ToList();            
         }
 
         public List<ToDo> GetNotDone(string name)
         {
 
-            return ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Finnished == false).ToList();
+            return ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Name.ToLower() == name.ToLower()).Where(t => t.Finnished == false).ToList();
         }
 
         public List<ToDo> GetDoneImportant(string name)
         {
 
-            return GetDone(name).Where(t => t.Description.Last() == '!').ToList();
+            return GetDone(name).Where(t => t.Name.ToLower() == name.ToLower()).Where(t => t.Description.Last() == '!').ToList();
         }
         public List<ToDo> GetNotDoneImportant(string name)
         {
 
-            return GetNotDone(name).Where(t => t.Description.Last() == '!').ToList();
+            return GetNotDone(name).Where(t => t.Name.ToLower() == name.ToLower()).Where(t => t.Description.Last() == '!').ToList();
         }
 
 
@@ -197,7 +197,7 @@ namespace WcfToDoService
 
             ourDataAccessLayer.AddToDo(todo);  // (try to...) Save the ToDo-item to the database!!
 
-            tempToDoList = ourDataAccessLayer.GetToDoListByName(todo.Name); // Get the existing todo list again!
+            tempToDoList = ourDataAccessLayer.GetToDoListByName(todo.Name).Where(t => t.Name.ToLower() == name.ToLower()).ToList(); // Get the existing todo list again!
             foreach (var t in tempToDoList)
             {
                 if (t == todo) return t; // This time, we DO want to find our todo list in the database, if so return its Id
@@ -270,7 +270,7 @@ namespace WcfToDoService
                 ourDataAccessLayer.DeleteToDo(toDo.Id);
             }
 
-            toDoList = ourDataAccessLayer.GetToDoListByName(name);
+            toDoList = ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Name.ToLower() == name.ToLower()).ToList();
             if (toDoList.Count > 0) return false;
             return true;
 
@@ -335,7 +335,7 @@ namespace WcfToDoService
                 var aToDo = ourDataAccessLayer.GetToDoById(_id);
                 if (aToDo == null) return null;
                 if (aToDo.Name == null) return null;
-                if (aToDo.Name == name)
+                if (aToDo.Name.ToLower() == name.ToLower())
                 {
                     aToDo.Finnished = true;
                     ourDataAccessLayer.UpdateToDo(aToDo);
@@ -354,7 +354,7 @@ namespace WcfToDoService
                 var aToDo = ourDataAccessLayer.GetToDoById(_id);
                 if (aToDo == null) return false; // I hate to do this
                 if (aToDo.Name == null) return false; // but REST dont like nullable types at all :-(
-                if (aToDo.Name == name)
+                if (aToDo.Name.ToLower() == name.ToLower())
                     return aToDo.Finnished;
             }
             return false;
@@ -369,7 +369,7 @@ namespace WcfToDoService
                 var aToDo = ourDataAccessLayer.GetToDoById(_id);
                 if (aToDo == null) return null;
                 if (aToDo.Name == null) return null;
-                if (aToDo.Name == name)
+                if (aToDo.Name.ToLower() == name.ToLower())
                 {
                     aToDo.Finnished = false;
                     ourDataAccessLayer.UpdateToDo(aToDo);
@@ -502,7 +502,7 @@ namespace WcfToDoService
 
             var aToDo = ourDataAccessLayer.GetToDoById(_id);
             if (aToDo == null) return null;
-            if (aToDo.Name != name) return null;
+            if (aToDo.Name.ToLower() != name.ToLower()) return null;
 
             aToDo.Description = description;
             ourDataAccessLayer.UpdateToDo(aToDo);
@@ -536,7 +536,7 @@ namespace WcfToDoService
                 throw new ArgumentNullException("name");
             }
             // Get the number of ToDoos with a specific name
-            List<ToDo> toDoos = ourDataAccessLayer.GetToDoListByName(name);
+            List<ToDo> toDoos = ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Name.ToLower() == name.ToLower()).ToList();
             return toDoos.Count;
         }
 
@@ -547,7 +547,7 @@ namespace WcfToDoService
                 throw new ArgumentNullException("name");
             }
             // Get the number of ToDoos with a specific name
-            List<ToDo> toDoos = ourDataAccessLayer.GetToDoListByName(name);
+            List<ToDo> toDoos = ourDataAccessLayer.GetToDoListByName(name).Where(t => t.Name.ToLower() == name.ToLower()).ToList();
             int _count = 0;
 
             var markedTodoos = from todo in toDoos where todo.Finnished.Equals(true) select todo;
