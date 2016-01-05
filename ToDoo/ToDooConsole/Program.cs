@@ -15,6 +15,9 @@ namespace ToDoConsole
 {
     class Program
     {
+
+        public enum httpMethod { GET, POST, PUT, DELETE, OPTIONS, HEAD, TRACE, CONNECT }
+
         static void Main(string[] args)
         {
             TestWcfService();
@@ -356,11 +359,15 @@ namespace ToDoConsole
             Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone setting all previously DONE items to finnished=false for {name}");
             foreach (var yetAnotherTodo in someDoneStuff)
                 channel.MarkToDoNotDone(name, yetAnotherTodo.Id.ToString());
-                
-            
-                Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone setting all previously NOT DONE items to finnished=true for {name}");
+            ViewInvokeInstructions($"/todo/{name}/id_of_item/notdone", httpMethod.PUT);
+
+
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone setting all previously NOT DONE items to finnished=true for {name}");
             foreach (var yetAnotherTodo in someNotDoneStuff)
                 channel.MarkToDoDone(name, yetAnotherTodo.Id.ToString());
+
+            ViewInvokeInstructions($"/todo/{name}/id_of_item/done", httpMethod.PUT);
+
 
 
             Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone trying if items are Finnished = true for {name}");
@@ -693,6 +700,20 @@ namespace ToDoConsole
             Console.WriteLine("This can also be accomplished by navigating to");
             Console.WriteLine($"http://localhost:8000{urlPart}");
             Console.WriteLine("in a web browser while this sample is running.");
+            Console.WriteLine();
+
+        }
+
+
+        // Shows instructions to the user of our console application that the information
+        // can also be retrieved via HTTP protocol
+        static void ViewInvokeInstructions(string urlPart, httpMethod method)
+        {
+
+            Console.WriteLine("");
+            Console.WriteLine("This can also be accomplished by accessing");
+            Console.WriteLine($"http://localhost:8000{urlPart} with the {method.ToString()} method.");
+            Console.WriteLine("from a front-end application while this sample is running.");
             Console.WriteLine();
 
         }
