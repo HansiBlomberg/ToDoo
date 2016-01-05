@@ -647,6 +647,7 @@ namespace ToDoConsole
         {
             // While testing, a lot of todo lists will be created.
             // This will clean up the database
+            DeleteToDoByName(channel, "Hamid X");
             DeleteToDoByName(channel, "Mr EditToDo");
 
             ToDo test = new ToDo()
@@ -679,16 +680,6 @@ namespace ToDoConsole
                 Console.WriteLine("Det gick BRA att köra EditToDo");
             }
 
-
-            if (id == "") { id = "__default__"; } else { id = Uri.EscapeDataString(id); }
-            if (description == "") { description = "__default__"; } else { description = Uri.EscapeDataString(description); }
-            if (name == "") { name = "__default__"; } else { name = Uri.EscapeDataString(name); }
-            if (deadLine == "") { deadLine = "__default__"; } else { deadLine = Uri.EscapeDataString(deadLine); }
-            if (estimationTime == "") { estimationTime = "__default__"; } else { estimationTime = Uri.EscapeDataString(estimationTime); }
-            if (finnished == "") { finnished = "__default__"; } else { finnished = Uri.EscapeDataString(finnished); }
-
-            // Display how to access them via uri
-            ViewWebInstructions($"/EditToDo/{id}/{description}/{name}/{deadLine}/{estimationTime}/{finnished}");
 
         } // DemoEditToDo WCF method slutar här
 
