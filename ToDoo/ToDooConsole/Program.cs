@@ -648,7 +648,7 @@ namespace ToDoConsole
             // While testing, a lot of todo lists will be created.
             // This will clean up the database
             DeleteToDoByName(channel, "Hamid X");
-            DeleteToDoByName(channel, "Mr EditToDo");
+            //DeleteToDoByName(channel, "Mr EditToDo");
 
             ToDo test = new ToDo()
             {
