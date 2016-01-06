@@ -75,7 +75,7 @@ namespace ToDoConsole
 
                     DemoGetDone(channel, "Chow");
 
-                    DemoDeleteToDo(channel, "Michele");
+                    DemoUpdateAndDeleteToDoByID(channel, "Michele");
 
                     DemoSetAndCheckIfSomethingIsDone(channel, "MrDoer");
                     
@@ -598,8 +598,8 @@ namespace ToDoConsole
             DemoGetToDo(channel, name);
         }
 
-        //  Test the DeleteToDo() method.
-        static void DemoDeleteToDo(IToDoService channel, string name)
+        //  Test the DeleteToDoByID() and UpdateToDoByID methods.
+        static void DemoUpdateAndDeleteToDoByID(IToDoService channel, string name)
         {
             // Create a ToDo item to delete
             Console.WriteLine("Creating a ToDo item");
@@ -618,10 +618,16 @@ namespace ToDoConsole
             string lastId = Convert.ToString(aToDo.Last().Id);
             Console.WriteLine($"Created ToDo for {name} with ID {lastId} ");
 
+            // Update the last ToDo item
+            channel.UpdateToDoByID(name, lastId, aToDo.Last());
+            Console.WriteLine($"Item with {lastId} UPDATED");
+
             // Delete the last ToDo item
             channel.DeleteToDoByID(name, lastId);
-            Console.WriteLine($"Item with {lastId} deleted");
+            Console.WriteLine($"Item with {lastId} DELETED");
         }
+
+
 
         //// Testing the RevealALlMySecrets WCF method
         //static void DemoRevealAllMySecrets(IToDoService channel)

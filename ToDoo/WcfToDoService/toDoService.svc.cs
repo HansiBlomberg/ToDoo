@@ -276,10 +276,11 @@ namespace WcfToDoService
 
         }
 
+
         // Remove todo with the given ID
         public bool DeleteToDoByID(string _name, string _id)
         {
-            if ((_name == "" || _name == null) && (_id == "" || _id == null)) return false;
+            if (_name == "" || _name == null || _id == "" || _id == null) return false;
 
             int id;
             bool result = int.TryParse(_id, out id);
@@ -299,6 +300,22 @@ namespace WcfToDoService
             }
             return false;
         }
+
+        // Set todo with the given ID to Finished (done).
+        public bool UpdateToDoByID(string name, string id, ToDo todo)
+        {
+            if (name == "" || name == null || id == "" || id == null) return false;
+
+            try
+            {
+                todo.Finnished = true;
+                ourDataAccessLayer.UpdateToDo(todo);
+                return true;
+            }
+            catch { return false; }
+        }
+
+
 
         public Estimate GetEstimate(string name)
         {
