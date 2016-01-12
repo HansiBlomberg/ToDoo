@@ -61,26 +61,48 @@ namespace ToDoConsole
 
                     DemoGetToDo(channel, "Charlie");
 
+                    PauseForHamid();
+
+
+
                     DemoGetToDoImportant(channel, "MrInAHurry");
+
+                    PauseForHamid();
 
                     DemoGetEstimate(channel, "MrInAHurry");
 
+                    PauseForHamid();
+
                     DemoGetToDoPriority(channel, "MrInAHurry");
-                    
+
+                    PauseForHamid();
+
                     DemoCreateToDo(channel, "Charlie");
+
+                    PauseForHamid();
 
                     DemoCreateToDoCSV(channel, "MrCSVTester");
 
-                   //  DemoRevealAllMySecrets(channel);
+                    PauseForHamid();
+
+                    //  DemoRevealAllMySecrets(channel);
 
                     DemoGetDone(channel, "Chow");
 
+                    PauseForHamid();
+
                     DemoUpdateAndDeleteToDoByID(channel, "Michele");
 
+                    PauseForHamid();
+
                     DemoSetAndCheckIfSomethingIsDone(channel, "MrDoer");
-                    
+
+                    PauseForHamid();
+
 
                     DemoEditToDo(channel, "", "Hamid X", "", "", "false");
+
+                    PauseForHamid();
 
 
 
@@ -744,6 +766,13 @@ namespace ToDoConsole
 
 
 
+        }
+
+        static void PauseForHamid()
+        {
+            Console.WriteLine("Press <ENTER> to continue");
+            Console.ReadLine();
+            Console.Clear();
         }
 
     }
