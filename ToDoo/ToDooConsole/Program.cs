@@ -55,73 +55,100 @@ namespace ToDoConsole
                     // The channel object will be used to communicate with the server/service we have created above.
                     IToDoService channel = cf.CreateChannel();
 
-                  
+
 
                     // Demonstrate the methods
 
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 1 - hämta todo");
                     DemoGetToDo(channel, "Charlie");
-
                     PauseForHamid();
 
-
-
-                    DemoGetToDoImportant(channel, "MrInAHurry");
-
-                    PauseForHamid();
-
-                    DemoGetEstimate(channel, "MrInAHurry");
-
-                    PauseForHamid();
-
-                    DemoGetToDoPriority(channel, "MrInAHurry");
-
-                    PauseForHamid();
-
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 2 - skapa todo och Krav 3 Lägga till punkter");
                     DemoCreateToDo(channel, "Charlie");
-
                     PauseForHamid();
 
-                    DemoCreateToDoCSV(channel, "MrCSVTester");
-
-                    PauseForHamid();
-
-                    //  DemoRevealAllMySecrets(channel);
-
-                    DemoGetDone(channel, "Chow");
-
-                    PauseForHamid();
-
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 4 - ta bort punkter från listan");
                     DemoUpdateAndDeleteToDoByID(channel, "Michele");
-
-                    PauseForHamid();
-
-                    DemoSetAndCheckIfSomethingIsDone(channel, "MrDoer");
-
                     PauseForHamid();
 
 
-                    DemoEditToDo(channel, "", "Hamid X", "", "", "false");
 
-                    PauseForHamid();
-
-
+                  
 
                     // Testing the "GetNumberOfToDoos" method
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 5a - se antal punkter i listan");
                     string _name = "Hamid";
                     string _numberOfToDoos = channel.GetNumberOfToDoos(_name).ToString();
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("GetNumberOfToDoos:");
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($"There are this many todoos in the {_name} list: {_numberOfToDoos}");
+                    PauseForHamid();
+
 
                     // Testing the "GetNumberOfMarkedToDoos" method
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 5b - se alla avklarade punkter i listan");
                     string _numberOfMarkedToDoos = channel.GetNumberOfMarkedToDoos(_name).ToString();
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("GetNumberOfMarkedToDoos:");
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($"There are this many marked todoos in the {_name} list: {_numberOfMarkedToDoos}");
                     Console.WriteLine("");
+                    PauseForHamid();
 
+
+
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Bonus - Se om ett item är avklarat, sätt ett item som avklarat m.m.");
+                    DemoSetAndCheckIfSomethingIsDone(channel, "MrDoer");
+                    PauseForHamid();
+
+
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 6 - Lista med avklarade");
+                    DemoGetDone(channel, "Chow");
+                    PauseForHamid();
+
+
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 7 - Skriva in flera punkter samtidigt");
+                    DemoCreateToDoCSV(channel, "MrCSVTester");
+                    PauseForHamid();
+
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 8 - Redigera punkter");
+                    DemoEditToDo(channel, "", "Hamid X", "", "", "false");
+                    PauseForHamid();
+
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 9 - Sortering efter deadline");
+                    DemoGetToDoPriority(channel, "MrInAHurry");
+                    PauseForHamid();
+
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 10 - Hämta viktiga punkter");
+                    DemoGetToDoImportant(channel, "MrInAHurry");
+                    PauseForHamid();
+
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 11 - Estimat");
+                    DemoGetEstimate(channel, "MrInAHurry");
+                    PauseForHamid();
+
+                    
+
+                    
+
+                    
+
+                    //  DemoRevealAllMySecrets(channel);
+
+                    
+
+                   
+
+                   
+
+
+                    
+
+
+
+                   
+                   
 
                 }
 
@@ -772,7 +799,17 @@ namespace ToDoConsole
         {
             Console.WriteLine("Press <ENTER> to continue");
             Console.ReadLine();
+           
+        }
+
+        static void DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout(string description)
+        {
             Console.Clear();
+            Console.Write(description);
+            Console.WriteLine("   ---  Press <ENTER> to begin");
+            Console.ReadLine();
+
+
         }
 
     }
