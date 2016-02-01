@@ -59,13 +59,15 @@ namespace ToDoConsole
 
                     // Demonstrate the methods
 
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 2 - skapa todo och Krav 3 Lägga till punkter");
+                    DemoCreateToDo(channel, "Charlie");
+                    PauseForHamid();
+
                     DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 1 - hämta todo");
                     DemoGetToDo(channel, "Charlie");
                     PauseForHamid();
 
-                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 2 - skapa todo och Krav 3 Lägga till punkter");
-                    DemoCreateToDo(channel, "Charlie");
-                    PauseForHamid();
+                    
 
                     DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 4 - ta bort punkter från listan");
                     DemoUpdateAndDeleteToDoByID(channel, "Michele");
@@ -116,39 +118,63 @@ namespace ToDoConsole
                     DemoEditToDo(channel, "", "Hamid X", "", "", "false");
                     PauseForHamid();
 
-                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 9 - Sortering efter deadline");
-                    DemoGetToDoPriority(channel, "MrInAHurry");
-                    PauseForHamid();
 
                     DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 10 - Hämta viktiga punkter");
                     DemoGetToDoImportant(channel, "MrInAHurry");
                     PauseForHamid();
 
+
+
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 9 - Sortering efter deadline");
+                    DemoGetToDoPriority(channel, "MrInAHurry");
+                    PauseForHamid();
+
+                   
+
                     DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 11 - Estimat");
                     DemoGetEstimate(channel, "MrInAHurry");
                     PauseForHamid();
 
-                    
 
-                    
+                    // Testing the "GetNumberOfToDoos" method AGAIN
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 5a en gång till - se antal punkter i listan MrInAHurry");
+                    _name = "MrInAHurry";
+                    _numberOfToDoos = channel.GetNumberOfToDoos(_name).ToString();
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("GetNumberOfToDoos:");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine($"There are this many todoos in the {_name} list: {_numberOfToDoos}");
+                    PauseForHamid();
 
-                    
+
+
+                    // Testing the "GetNumberOfMarkedToDoos" method AGAIN
+                    DescribeWhatTheGibberishThatIsGoingToBeDisplayedOnTheConsoleIsAllAbout("Krav 5b - se alla avklarade punkter i listan");
+                    _numberOfMarkedToDoos = channel.GetNumberOfMarkedToDoos(_name).ToString();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("GetNumberOfMarkedToDoos:");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine($"There are this many marked todoos in the {_name} list: {_numberOfMarkedToDoos}");
+                    Console.WriteLine("");
+                    PauseForHamid();
+
+
 
                     //  DemoRevealAllMySecrets(channel);
 
-                    
-
-                   
-
-                   
-
-
-                    
 
 
 
-                   
-                   
+
+
+
+
+
+
+
+
+
+
 
                 }
 
@@ -199,9 +225,9 @@ namespace ToDoConsole
 
             Console.WriteLine();
             Console.WriteLine($"DemoGetToDoImportant clearing out test data for todolist {name}");
+           
             DeleteToDoByName(channel, name);
-
-
+            PauseForHamid();
 
             Console.WriteLine($"DemoGetToDoImportant creating test data for todolist {name}");
             ToDo rowOne = new ToDo()
@@ -261,22 +287,24 @@ namespace ToDoConsole
                 EstimationTime = 100
             };
             channel.CreateToDo(name, rowFive);
-
+            PauseForHamid();
 
             Console.WriteLine("DemoGetToDoImportant Calling GetToDo - this is all the items");
             List<ToDo> aToDo = channel.GetToDo(name);
             ViewToDoItems(aToDo, "GetToDo", name);
-
+            PauseForHamid();
 
             Console.WriteLine("DemoGetToDoImportant Calling CountToDoImportant");
             Console.WriteLine($"There is {channel.CountToDoImportant(name)} important items in the {name} list.");
             ViewWebInstructions($"/todo/{name}/count/important");
             Console.WriteLine();
+            PauseForHamid();
 
             Console.WriteLine("DemoGetToDoImportant Calling CountDoneImportant");
             Console.WriteLine($"There is {channel.CountToDoImportant(name)} DONE important items in the {name} list.");
             ViewWebInstructions($"/todo/{name}/count/important");
             Console.WriteLine();
+            PauseForHamid();
 
 
             Console.WriteLine("DemoGetToDoImportant Calling GetToDoImportant - only important items");
@@ -284,27 +312,29 @@ namespace ToDoConsole
             ViewToDoItems(aToDo, "GetToDoImportant", name);
             ViewWebInstructions($"/todo/{name}/important");
             Console.WriteLine();
+            PauseForHamid();
 
             Console.WriteLine("DemoGetToDoImportant Calling GetDoneImportant");
             aToDo = channel.GetDoneImportant(name);
             ViewToDoItems(aToDo, "GetDoneImportant", name);
             ViewWebInstructions($"/getdone/{name}/important");
             Console.WriteLine();
+            PauseForHamid();
 
             Console.WriteLine("DemoGetToDoImportant Calling GetNotDone");
             aToDo = channel.GetNotDone(name);
             ViewToDoItems(aToDo, "GetNotDone", name);
             ViewWebInstructions($"/getnotdone/{name}");
             Console.WriteLine();
-
+            PauseForHamid();
 
             Console.WriteLine("DemoGetToDoImportant Calling GetNotDoneImportant");
             aToDo = channel.GetNotDoneImportant(name);
             ViewToDoItems(aToDo, "GetNotDoneImportant", name);
             ViewWebInstructions($"/getnotdone/{name}/important");
             Console.WriteLine();
+            PauseForHamid();
 
-         
 
 
 
@@ -321,6 +351,7 @@ namespace ToDoConsole
             Console.WriteLine();
             Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone clearing out test data for todolist {name}");
             DeleteToDoByName(channel, name);
+            PauseForHamid();
             Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone creating test data for todolist {name}");
             ToDo rowOne = new ToDo()
             {
@@ -379,23 +410,28 @@ namespace ToDoConsole
                 EstimationTime = 100
             };
             channel.CreateToDo(name, rowFive);
-
+            PauseForHamid();
 
             Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone fetching list of stuff to do for {name}");
             var someStuffToDo = channel.GetToDo(name);
+            ViewToDoItems(someStuffToDo, "DemoSetAndCheckIfSomethingIsDone", name);
+            PauseForHamid();
 
             Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone printing all that is not done for {name}");
             var someNotDoneStuff = channel.GetNotDone(name);
             ViewToDoItems(someNotDoneStuff, "DemoSetAndCheckIfSomethingIsDone", name);
-            
+            PauseForHamid();
+
 
             Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone printing all that IS done for {name}");
             var someDoneStuff = channel.GetDone(name);
             ViewToDoItems(someDoneStuff, "DemoSetAndCheckIfSomethingIsDone", name);
+            PauseForHamid();
 
             Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone trying if items are Finnished = true for {name}");
             foreach(var yetAnotherTodo in someStuffToDo)
                 Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it finished? {channel.IsToDoDone(name, yetAnotherTodo.Id.ToString())}");
+            PauseForHamid();
 
             Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone trying if items are Finnished = false for {name}");
             foreach (var yetAnotherTodo in someStuffToDo)
@@ -403,12 +439,14 @@ namespace ToDoConsole
                 Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it NOT finished? {channel.IsToDoNotDone(name, yetAnotherTodo.Id.ToString())}");
                 ViewWebInstructions($"/todo/{name}/{yetAnotherTodo.Id.ToString()}/notdone");
             }
+            PauseForHamid();
 
 
             Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone setting all previously DONE items to finnished=false for {name}");
             foreach (var yetAnotherTodo in someDoneStuff)
                 channel.MarkToDoNotDone(name, yetAnotherTodo.Id.ToString());
             ViewInvokeInstructions($"/todo/{name}/id_of_item/notdone", httpMethod.PUT);
+            PauseForHamid();
 
 
             Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone setting all previously NOT DONE items to finnished=true for {name}");
@@ -416,6 +454,7 @@ namespace ToDoConsole
                 channel.MarkToDoDone(name, yetAnotherTodo.Id.ToString());
 
             ViewInvokeInstructions($"/todo/{name}/id_of_item/done", httpMethod.PUT);
+            PauseForHamid();
 
 
 
@@ -425,13 +464,15 @@ namespace ToDoConsole
                 Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it finished? {channel.IsToDoDone(name, yetAnotherTodo.Id.ToString())}");
                 ViewWebInstructions($"/todo/{name}/{yetAnotherTodo.Id.ToString()}/done");
             }
+            PauseForHamid();
 
-                Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone trying if items are Finnished = false for {name}");
+            Console.WriteLine($"DemoSetAndCheckIfSomethingIsDone trying if items are Finnished = false for {name}");
             foreach (var yetAnotherTodo in someStuffToDo)
                 Console.WriteLine($"ID: {yetAnotherTodo.Id} Is it NOT finished? {channel.IsToDoNotDone(name, yetAnotherTodo.Id.ToString())}");
 
-
+            PauseForHamid();
         }
+        
 
 
 
@@ -443,6 +484,7 @@ namespace ToDoConsole
             Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the items in {name}");
             Console.WriteLine($"so it will be done at {estimate.CompletedAt.ToString("yyyy-MM-dd HH:mm")}");
             ViewWebInstructions($"/todo/{name}/estimate");
+            PauseForHamid();
 
             Console.WriteLine();
             Console.WriteLine("DemoGetEstimate Calling GetEstimateImportant - for IMPORTANT items");
@@ -450,6 +492,7 @@ namespace ToDoConsole
             Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the IMPORTANT items in {name}");
             Console.WriteLine($"so it will be done at {estimate.CompletedAt.Date.ToString("yyyy-MM-dd HH:mm")}");
             ViewWebInstructions($"/todo/{name}/estimate/important");
+            PauseForHamid();
 
 
             Console.WriteLine();
@@ -458,6 +501,7 @@ namespace ToDoConsole
             Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the NOT DONE items in {name}");
             Console.WriteLine($"so it will be done at {estimate.CompletedAt.ToString("yyyy-MM-dd HH:mm")}");
             ViewWebInstructions($"/getnotdone/{name}/estimate");
+            PauseForHamid();
 
             Console.WriteLine();
             Console.WriteLine("DemoGetEstimate Calling GetEstimateNotDoneImportant - for IMPORTANT items");
@@ -465,6 +509,7 @@ namespace ToDoConsole
             Console.WriteLine($"It will take {estimate.TotalTime} minutes to finish all the NOT DONE IMPORTANT items in {name}");
             Console.WriteLine($"so it will be done at {estimate.CompletedAt.Date.ToString("yyyy-MM-dd HH:mm")}");
             ViewWebInstructions($"/getnotdone/{name}/estimate/important");
+            PauseForHamid();
 
 
 
@@ -477,12 +522,14 @@ namespace ToDoConsole
             var aToDo = channel.GetToDoPriority(name);
             ViewToDoItems(aToDo, "GetToDoPriority", name);
             ViewWebInstructions($"/todo/{name}/priority");
+            PauseForHamid();
 
             Console.WriteLine();
             Console.WriteLine("DemoGetToDoPriority Calling GetToDoPriorityImportant - for IMPORTANT items");
             aToDo = channel.GetToDoPriorityImportant(name);
             ViewToDoItems(aToDo, "GetToDoPriorityImportant", name);
             ViewWebInstructions($"/todo/{name}/priority/important");
+            PauseForHamid();
 
 
 
@@ -570,7 +617,7 @@ namespace ToDoConsole
             // The DateTime.Tryparse will return TRUE if successful
             // or FALSE if it went wrong.
             // If it was successful, the converted date will be put into the tempDateTime variable
-            var weWereAbleToConvertTheStringToDateTime = DateTime.TryParse("2016-01-01", out tempDateTime);
+            var weWereAbleToConvertTheStringToDateTime = DateTime.TryParse("2016-10-10", out tempDateTime);
 
             if (weWereAbleToConvertTheStringToDateTime)
             {
@@ -591,9 +638,13 @@ namespace ToDoConsole
 
             // While testing, a lot of todo lists will be created.
             // This will clean up the database
+
+            Console.WriteLine($"Because we choose to do so, we will now DELETE all todo items named {name}");
+            PauseForHamid();
             DeleteToDoByName(channel, name);
 
-
+            Console.WriteLine($"We will now add a new item to the list {name}");
+            PauseForHamid();
 
             // Here we do the call to actually create the ToDo-item using the WCF CreateToDO method
             if (channel.CreateToDo(name, aNewToDoItem) != null)
@@ -606,11 +657,42 @@ namespace ToDoConsole
                 // This happens if the CreateToDo WVF method is unhappy and return a FALSE. 
                 Console.WriteLine($"Vi misslyckades med att lägga till ett todo item med namn {aNewToDoItem.Name}");
             }
+            PauseForHamid();
+
+            // Lets make another item to be added
+            aNewToDoItem.CreatedDate = DateTime.Now;
+            aNewToDoItem.Name = name;
+            aNewToDoItem.Finnished = true;   // Finnished...rotflmao!
+            aNewToDoItem.EstimationTime = 120;
+            aNewToDoItem.Description = "Baka Sockerkaka";
+
+            Console.WriteLine($"We will now add a yet another new item to the list {name}");
+            PauseForHamid();
+
+            // Here we do the call to actually create the ToDo-item using the WCF CreateToDO method
+            if (channel.CreateToDo(name, aNewToDoItem) != null)
+            {
+                // This is the success message. It should be successful.
+                Console.WriteLine($"Vi lyckades lägga till ett todo item med namn {aNewToDoItem.Name}");
+            }
+            else
+            {
+                // This happens if the CreateToDo WVF method is unhappy and return a FALSE. 
+                Console.WriteLine($"Vi misslyckades med att lägga till ett todo item med namn {aNewToDoItem.Name}");
+            }
+            PauseForHamid();
+
 
 
             // To demonstrate, we try to create another ToDO-item, but because the CreateToDO method
             // will refuse to add Items if the name parameter (Chaplin in this case) is not the same
             // as the aNewToDoItem.Name (CHarlie in this case)
+
+            Console.WriteLine($"We will now FAIL to add a new item to the list {name}");
+            Console.WriteLine("This is because we have some VALIDATION in place");
+            Console.WriteLine("that we want to test.");
+            PauseForHamid();
+
             if (channel.CreateToDo(name+"other", aNewToDoItem) != null)
             {
                 Console.WriteLine($"Vi lyckades lägga till ett todo item med namn {aNewToDoItem.Name}");
@@ -620,6 +702,7 @@ namespace ToDoConsole
                 // Because of our "mistake" explained above, this will happen.
                 Console.WriteLine($"Vi misslyckades med att lägga till ett todo item med namn {aNewToDoItem.Name}");
             }
+            PauseForHamid();
         }
 
         // Testing the CreateToDoCSV method
@@ -661,19 +744,26 @@ namespace ToDoConsole
             toDoItem.EstimationTime = 1;
             toDoItem.Description = "Delete Me!";
             channel.CreateToDo(name, toDoItem);
-
+            Console.WriteLine("ToDo item Created!");
+            PauseForHamid();
             // Get the last ID of that users ToDo
             List<ToDo> aToDo = channel.GetToDo(name);
             string lastId = Convert.ToString(aToDo.Last().Id);
             Console.WriteLine($"Created ToDo for {name} with ID {lastId} ");
 
+            Console.WriteLine("Next we will UPDATE the todo item");
+            PauseForHamid();
             // Update the last ToDo item
             channel.UpdateToDoByID(name, lastId, aToDo.Last());
             Console.WriteLine($"Item with {lastId} UPDATED");
 
+            Console.WriteLine("Next we will DELETE the todo item");
+            PauseForHamid();
+
             // Delete the last ToDo item
             channel.DeleteToDoByID(name, lastId);
             Console.WriteLine($"Item with {lastId} DELETED");
+            PauseForHamid();
         }
 
 
